@@ -1,35 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.js
 
-function App() {
-  const [count, setCount] = useState(0)
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import LandingPage from './pages/LandingPage';
+import Dashboard from './pages/Dashboard';
+import AnalyticsReports from './components/AnalyticsReports';
+import ManageBarbers from './components/ManageBarbers';
+import ClientEngagement from './components/ClientEngagement';
+import BarberAppointments from './components/BarberAppointments'; // Import the new BarberAppointments component
 
+const App = () => {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/analytics" element={<AnalyticsReports />} />
+        <Route path="/manage-barbers" element={<ManageBarbers />} />
+        <Route path="/clientEngagement" element={<ClientEngagement />} />
+        <Route path="/appointments" element={<BarberAppointments />} /> {/* Route changed to '/appointments' */}
+      </Routes>
+    </Router>
+  );
+};
 
-export default App
+export default App;
