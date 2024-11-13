@@ -8,8 +8,9 @@ const Sidebar = () => {
       <ul>
         <ul><Link to="/dashboard">Dashboard</Link></ul>
         <ul><Link to="/manage-shops">Shop Owners</Link></ul>
-        <ul><Link to="/login">Logout</Link></ul>
         <ul><Link to="/shopcontext">ShopContext</Link></ul>
+        <ul><Link to="/navbar">Logout</Link></ul>
+
       </ul>
     </div>
   );

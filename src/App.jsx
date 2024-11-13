@@ -4,10 +4,12 @@ import Dashboard from './components/Dashboard';
 import ManageShops from './components/ManageShops';
 import Login from './components/SuperAdmin';
 import Navbar from './components/Navbar';
+import LandingPage from './components/LandingPage';
 const App = () => {
   return (
     <div>
       <Routes>
+        <Route path="/landingpage" element={<LandingPage />} />
         <Route path="/navbar" element={<Navbar />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />

@@ -1,10 +1,8 @@
-// src/components/ManageShops.jsx
 import React, { useContext, useState } from 'react';
-import { ShopContext } from './ShopContext'; // Make sure the import is correct
+import { ShopContext } from './ShopContext'; 
 
 const ManageShops = () => {
-  const { shops, addShop } = useContext(ShopContext); // Consume the context here
-
+  const { shops, addShop } = useContext(ShopContext); 
   const [shopName, setShopName] = useState('');
   const [ownerName, setOwnerName] = useState('');
 
@@ -16,15 +14,13 @@ const ManageShops = () => {
     }
 
     const newShop = {
-      id: shops.length + 1, // Simple ID generation
+      id: shops.length + 1, 
       name: shopName,
       owner: ownerName,
     };
 
-    // Add the new shop using the context function
     addShop(newShop);
 
-    // Reset the form fields
     setShopName('');
     setOwnerName('');
   };

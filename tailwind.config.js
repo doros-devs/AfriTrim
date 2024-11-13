@@ -7,12 +7,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        gold: '#A68F7B',
+        gold: '#FFD700',
         lightgold: '#736558',
         lightGray: '#F2F2F2',
-        mediumGray: '#737373',
+        mediumGray: '#A9A9A9',
         darkGray: '#262626',
-        blackGray: '#0D0D0D',
+        blackGray: '#1A1A1A',
       },
     },
   },
