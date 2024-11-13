@@ -1,20 +1,19 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Signup from "./components/Signup";
-import Login from "./components/Login";
-import ForgotPassword from "./components/Forgotpassword";
-import LandingPage from "./components/LandingPage";
-
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Dashboard from './components/Dashboard';
+import ManageShops from './components/ManageShops';
+import Login from './components/SuperAdmin';
+import Navbar from './components/Navbar';
 const App = () => {
   return (
-    <Router>
+    <div>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/navbar" element={<Navbar />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<Forgotpassword />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/manage-shops" element={<ManageShops />} />
       </Routes>
-    </Router>
+    </div>
   );
 };
 
