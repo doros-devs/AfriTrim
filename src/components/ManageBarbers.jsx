@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import kymBarbershop from '../assets/kym-barbershop.jpg';
+import { Dialog } from '@headlessui/react';
 
 const ManageBarbers = () => {
   const [isAddFormVisible, setIsAddFormVisible] = useState(false);
@@ -20,6 +20,9 @@ const ManageBarbers = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [showButtons, setShowButtons] = useState(true);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [deleteIndex, setDeleteIndex] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
   const handleBack = () => navigate('/dashboard');
@@ -30,7 +33,12 @@ const ManageBarbers = () => {
   };
 
   const handleButtonClick = () => {
-    if (isEditMode) {
+    if (!barberDetails.name || !barberDetails.phoneNumber || !barberDetails.roles) {
+      alert("Please fill out all required fields");
+      return;
+    }
+
+    if (isEditMode !== false) {
       const updatedBarbers = barbers.map((barber, index) =>
         index === isEditMode ? { ...barberDetails } : barber
       );
@@ -61,6 +69,7 @@ const ManageBarbers = () => {
   const handleDeleteBarber = (index) => {
     const updatedBarbers = barbers.filter((_, i) => i !== index);
     setBarbers(updatedBarbers);
+    setShowDeleteDialog(false);
   };
 
   const handleEditBarber = (index) => {
@@ -79,174 +88,177 @@ const ManageBarbers = () => {
     if (file) reader.readAsDataURL(file);
   };
 
+  const filteredBarbers = barbers.filter((barber) =>
+    barber.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <div className="relative min-h-screen">
-      <div
-        className="absolute inset-0 bg-black bg-opacity-50 z-0"
-        style={{
-          backgroundImage: `url(${kymBarbershop})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      />
+    <div className="flex flex-col items-center justify-start bg-black p-6">
+      <h2 className="text-4xl font-extrabold mb-6 text-center text-white drop-shadow-md">Manage Barbers</h2>
+      <div className="bg-black bg-opacity-80 p-6 rounded-lg w-full max-w-xl mb-6 text-white text-center shadow-lg">
+        <h3 className="text-2xl font-semibold">Analytics</h3>
+        <p className="text-lg">Total Barbers Added: {barbers.length}</p>
+      </div>
 
-      <div className="relative flex flex-col items-center justify-center min-h-screen z-10">
-        <nav className="absolute top-0 right-0 w-full p-4 bg-black bg-opacity-80 text-white flex justify-end items-center z-20 shadow-md">
-          <button onClick={handleBack} className="border border-white text-white text-lg px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-white hover:text-black">
-            Back
+      {showButtons && (
+        <div className="flex flex-col items-center gap-6 mb-8 w-full max-w-xs">
+          <button
+            onClick={() => {
+              setIsAddFormVisible(true);
+              setIsViewFormVisible(false);
+              setShowButtons(false);
+            }}
+            className="w-full px-6 py-3 rounded-md font-semibold text-white border-2 border-yellow-500 bg-gradient-to-r from-yellow-400 to-yellow-500 shadow-md transition duration-300 ease-in-out hover:scale-105"
+          >
+            Add Barber
           </button>
-        </nav>
+          <button
+            onClick={() => {
+              setIsViewFormVisible(true);
+              setIsAddFormVisible(false);
+              setShowButtons(false);
+            }}
+            className="w-full px-6 py-3 rounded-md font-semibold text-white border-2 border-yellow-500 bg-gradient-to-r from-yellow-400 to-yellow-500 shadow-md transition duration-300 ease-in-out hover:scale-105"
+          >
+            View Barbers
+          </button>
+        </div>
+      )}
 
-        <h2 className="text-4xl font-extrabold mb-6 text-center text-white drop-shadow-lg">Manage Barbers</h2>
+      {isAddFormVisible && (
+        <div className="bg-black bg-opacity-80 p-8 rounded-lg w-full max-w-xl shadow-lg">
+          <h3 className="text-2xl font-semibold mb-6 text-white">Add Barber</h3>
+          <div className="mb-4">
+            <label className="block text-lg font-medium text-white">Name</label>
+            <input
+              type="text"
+              value={barberDetails.name}
+              onChange={(e) => setBarberDetails({ ...barberDetails, name: e.target.value })}
+              className="w-full p-4 rounded-md bg-gray-700 text-white mt-2"
+              placeholder="Enter name"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-lg font-medium text-white">Phone Number</label>
+            <input
+              type="tel"
+              value={barberDetails.phoneNumber}
+              onChange={(e) => setBarberDetails({ ...barberDetails, phoneNumber: e.target.value })}
+              className="w-full p-4 rounded-md bg-gray-700 text-white mt-2"
+              placeholder="Enter phone number"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-lg font-medium text-white">Role</label>
+            <input
+              type="text"
+              value={barberDetails.roles}
+              onChange={(e) => setBarberDetails({ ...barberDetails, roles: e.target.value })}
+              className="w-full p-4 rounded-md bg-gray-700 text-white mt-2"
+              placeholder="Enter role"
+            />
+          </div>
 
-        {showButtons && (
-          <div className="flex flex-col items-center gap-6 mb-8 w-full max-w-xs">
+          <div className="flex justify-between gap-4">
             <button
-              onClick={() => {
-                setIsAddFormVisible(true);
-                setIsViewFormVisible(false);
-                setShowButtons(false);
-              }}
-              className="w-full px-6 py-3 rounded-md font-semibold text-white border-2 border-white bg-gradient-to-r from-gold to-yellow-500 shadow-md transition duration-300 ease-in-out hover:scale-105"
+              onClick={handleButtonClick}
+              className="w-1/2 px-6 py-3 bg-yellow-500 rounded-md text-white font-semibold transition duration-300 ease-in-out hover:scale-105"
             >
-              Add Barber
+              Save Barber
             </button>
             <button
               onClick={() => {
-                setIsViewFormVisible(true);
                 setIsAddFormVisible(false);
-                setShowButtons(false);
+                setShowButtons(true);
               }}
-              className="w-full px-6 py-3 rounded-md font-semibold text-white border-2 border-white bg-gradient-to-r from-gold to-yellow-500 shadow-md transition duration-300 ease-in-out hover:scale-105"
+              className="w-1/2 px-6 py-3 bg-red-500 rounded-md text-white font-semibold transition duration-300 ease-in-out hover:scale-105"
             >
-              View Added Barbers
+              Cancel
             </button>
           </div>
-        )}
+        </div>
+      )}
 
-        {isAddFormVisible && (
-          <div className="bg-black bg-opacity-80 p-8 rounded-lg border-2 border-white w-full max-w-lg text-white mt-8 shadow-lg">
-            <h3 className="text-2xl font-semibold text-center text-gold mb-6">{isEditMode ? 'Edit Barber' : 'Add Barber'}</h3>
-            <div className="space-y-4">
-              <input
-                type="text"
-                placeholder="Name"
-                value={barberDetails.name}
-                onChange={(e) => setBarberDetails({ ...barberDetails, name: e.target.value })}
-                className="w-full p-3 rounded-md bg-gray-700 text-white border-2 border-white shadow-inner"
-              />
-              <input
-                type="text"
-                placeholder="Roles (separate by comma)"
-                value={barberDetails.roles}
-                onChange={(e) => setBarberDetails({ ...barberDetails, roles: e.target.value })}
-                className="w-full p-3 rounded-md bg-gray-700 text-white border-2 border-white shadow-inner"
-              />
-              <input
-                type="number"
-                placeholder="Age"
-                value={barberDetails.age}
-                onChange={(e) => setBarberDetails({ ...barberDetails, age: e.target.value })}
-                className="w-full p-3 rounded-md bg-gray-700 text-white border-2 border-white shadow-inner"
-              />
-              <input
-                type="date"
-                value={barberDetails.startDate}
-                onChange={(e) => setBarberDetails({ ...barberDetails, startDate: e.target.value })}
-                className="w-full p-3 rounded-md bg-gray-700 text-white border-2 border-white shadow-inner"
-              />
-              <input
-                type="number"
-                placeholder="Years of Experience"
-                value={barberDetails.experience}
-                onChange={(e) => setBarberDetails({ ...barberDetails, experience: e.target.value })}
-                className="w-full p-3 rounded-md bg-gray-700 text-white border-2 border-white shadow-inner"
-              />
-              <input
-                type="text"
-                placeholder="Gender"
-                value={barberDetails.gender}
-                onChange={(e) => setBarberDetails({ ...barberDetails, gender: e.target.value })}
-                className="w-full p-3 rounded-md bg-gray-700 text-white border-2 border-white shadow-inner"
-              />
-              <input
-                type="text"
-                placeholder="Phone Number"
-                value={barberDetails.phoneNumber}
-                onChange={(e) => setBarberDetails({ ...barberDetails, phoneNumber: e.target.value })}
-                className="w-full p-3 rounded-md bg-gray-700 text-white border-2 border-white shadow-inner"
-              />
-              <input
-                type="file"
-                onChange={handleImageChange}
-                className="w-full p-3 rounded-md bg-gray-700 text-white border-2 border-white shadow-inner"
-              />
-              {barberDetails.profilePicture && (
-                <img
-                  src={barberDetails.profilePicture}
-                  alt="Profile Preview"
-                  className="w-24 h-24 rounded-full mx-auto mt-4 border-2 border-white shadow-md"
-                />
-              )}
-              <button
-                onClick={handleButtonClick}
-                className={`w-full py-3 rounded-md font-semibold text-black ${isActive ? 'bg-gold' : 'bg-gray-700'} border-2 border-white transition duration-300 ease-in-out hover:bg-gold hover:text-black shadow-md`}
-              >
-                {isEditMode ? 'Save Changes' : 'Add Barber'}
-              </button>
-            </div>
-          </div>
-        )}
-
-        {successMessage && (
-          <div className="mt-4 text-center text-white font-semibold text-lg bg-green-500 py-2 px-4 rounded-md shadow-lg">
-            {successMessage}
-          </div>
-        )}
-
-        {isViewFormVisible && (
-          <div className="bg-black bg-opacity-80 p-8 rounded-lg border-2 border-white w-full max-w-2xl text-white mt-8 shadow-lg">
-            <h3 className="text-2xl font-semibold text-center text-gold mb-6">View Added Barbers</h3>
+      {isViewFormVisible && (
+        <div className="w-full max-w-xl bg-black bg-opacity-80 p-6 rounded-lg">
+          <div className="flex justify-between items-center mb-4">
             <button
               onClick={handleViewBack}
-              className="mb-6 w-32 py-2 rounded-md font-semibold text-black bg-gold border-2 border-white transition duration-300 ease-in-out hover:bg-yellow-500 shadow-md text-sm"
+              className="px-4 py-2 bg-gray-600 text-white rounded-md"
             >
               Back
             </button>
-
-            {barbers.length > 0 ? (
-              barbers.map((barber, index) => (
-                <div key={index} className="bg-gray-800 bg-opacity-80 p-4 rounded-lg mb-4 border border-white shadow-md">
-                  <h4 className="text-lg font-semibold text-gold">Name: {barber.name}</h4>
-                  <p><strong>Roles:</strong> {barber.roles}</p>
-                  <p><strong>Age:</strong> {barber.age}</p>
-                  <p><strong>Start Date:</strong> {barber.startDate}</p>
-                  <p><strong>Experience:</strong> {barber.experience} years</p>
-                  <p><strong>Gender:</strong> {barber.gender}</p>
-                  <p><strong>Phone Number:</strong> {barber.phoneNumber}</p>
-                  {barber.profilePicture && (
-                    <img
-                      src={barber.profilePicture}
-                      alt={`${barber.name}'s profile`}
-                      className="w-32 h-32 rounded-full border border-white mt-2 shadow-md"
-                    />
-                  )}
-                  <div className="flex justify-between mt-4">
-                    <button onClick={() => handleEditBarber(index)} className="px-4 py-2 bg-yellow-500 rounded-md font-semibold text-black hover:bg-yellow-400 shadow-md">
-                      Edit
-                    </button>
-                    <button onClick={() => handleDeleteBarber(index)} className="px-4 py-2 bg-red-600 rounded-md font-semibold text-white hover:bg-red-500 shadow-md">
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="text-center text-lg font-semibold text-red-500">No barbers added yet.</p>
-            )}
+            <h3 className="text-2xl font-semibold text-white">View Barbers</h3>
           </div>
-        )}
-      </div>
+
+          <div className="flex mb-4">
+            <input
+              type="text"
+              className="p-3 w-full text-black"
+              placeholder="Search by name"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <div className="space-y-4">
+            {filteredBarbers.map((barber, index) => (
+              <div key={index} className="bg-gray-700 rounded-lg p-4 shadow-lg flex justify-between items-center">
+                <div>
+                  <p className="font-bold text-white">{barber.name}</p>
+                  <p className="text-gray-400">{barber.roles}</p>
+                </div>
+                <div className="flex space-x-4">
+                  <button
+                    onClick={() => handleEditBarber(index)}
+                    className="text-yellow-500 hover:underline"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => setShowDeleteDialog(true) || setDeleteIndex(index)}
+                    className="text-red-500 hover:underline"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {showDeleteDialog && (
+        <Dialog open={showDeleteDialog} onClose={() => setShowDeleteDialog(false)}>
+          <Dialog.Panel className="bg-black bg-opacity-80 p-6 rounded-lg w-full max-w-sm">
+            <Dialog.Title className="text-xl font-semibold text-white">Confirm Deletion</Dialog.Title>
+            <Dialog.Description className="text-white mt-4">
+              Are you sure you want to delete this barber?
+            </Dialog.Description>
+            <div className="flex gap-4 mt-4">
+              <button
+                onClick={() => handleDeleteBarber(deleteIndex)}
+                className="px-4 py-2 bg-red-500 rounded-md text-white"
+              >
+                Yes, Delete
+              </button>
+              <button
+                onClick={() => setShowDeleteDialog(false)}
+                className="px-4 py-2 bg-gray-500 rounded-md text-white"
+              >
+                No, Cancel
+              </button>
+            </div>
+          </Dialog.Panel>
+        </Dialog>
+      )}
+
+      {successMessage && (
+        <div
+          className={`p-4 mt-4 text-white text-center rounded-lg ${isActive ? 'bg-green-500' : 'bg-gray-600'}`}
+        >
+          {successMessage}
+        </div>
+      )}
     </div>
   );
 };

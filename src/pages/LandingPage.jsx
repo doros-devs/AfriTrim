@@ -9,6 +9,7 @@ const LandingPage = () => {
   const [amount, setAmount] = useState('');
   const [paymentConfirmed, setPaymentConfirmed] = useState(false);
   const [formStep, setFormStep] = useState(1);
+  const [loading, setLoading] = useState(false); // Loading state
   const navigate = useNavigate();
 
   const handleGetStarted = () => setShowForm(true);
@@ -23,12 +24,20 @@ const LandingPage = () => {
   };
 
   const handlePaymentSuccess = () => {
-    navigate('/dashboard');
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      navigate('/dashboard');
+    }, 1500);
   };
 
   const handlePay = () => {
-    setPaymentConfirmed(true);
-    setPaymentSuccessful(true);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setPaymentConfirmed(true);
+      setPaymentSuccessful(true);
+    }, 1500);
   };
 
   const nextStep = () => setFormStep((prev) => prev + 1);
@@ -66,7 +75,7 @@ const LandingPage = () => {
               onClick={handlePaymentSuccess}
               className="w-full p-3 bg-gold text-black font-semibold rounded-md transition-all transform hover:scale-105"
             >
-              Go to Dashboard
+              {loading ? 'Processing...' : 'Go to Dashboard'}
             </button>
           </div>
         </div>
@@ -78,6 +87,13 @@ const LandingPage = () => {
           <div className="absolute inset-0 bg-black opacity-60"></div>
           <div className="relative z-10 bg-black text-white p-8 rounded-md border-4 border-white max-w-xl w-full">
             <h1 className="text-2xl font-semibold mb-6 text-center text-white">Add Your Shop</h1>
+            {/* Progress bar */}
+            <div className="w-full bg-gray-600 rounded-full h-2 mb-4">
+              <div
+                className="bg-gold h-2 rounded-full transition-all duration-500"
+                style={{ width: `${(formStep / 3) * 100}%` }}
+              ></div>
+            </div>
             <form onSubmit={handleAddShop} className="space-y-6">
               {formStep === 1 && (
                 <>
@@ -85,16 +101,20 @@ const LandingPage = () => {
                     type="text"
                     placeholder="Owner's Name"
                     required
-                    className="w-full p-3 border-2 border-white rounded-md bg-transparent text-white font-medium"
+                    className="w-full p-3 border-2 border-white rounded-md bg-transparent text-white font-medium focus:ring-2 focus:ring-gold"
                   />
                   <input
                     type="email"
                     placeholder="Contact Email"
                     required
-                    className="w-full p-3 border-2 border-white rounded-md bg-transparent text-white font-medium"
+                    className="w-full p-3 border-2 border-white rounded-md bg-transparent text-white font-medium focus:ring-2 focus:ring-gold"
                   />
                   <div className="flex justify-end">
-                    <button type="button" onClick={nextStep} className="text-gold font-semibold hover:underline">
+                    <button
+                      type="button"
+                      onClick={nextStep}
+                      className="text-gold font-semibold hover:underline"
+                    >
                       Next
                     </button>
                   </div>
@@ -106,19 +126,27 @@ const LandingPage = () => {
                     type="text"
                     placeholder="Contact Number"
                     required
-                    className="w-full p-3 border-2 border-white rounded-md bg-transparent text-white font-medium"
+                    className="w-full p-3 border-2 border-white rounded-md bg-transparent text-white font-medium focus:ring-2 focus:ring-gold"
                   />
                   <input
                     type="text"
                     placeholder="Shop Location"
                     required
-                    className="w-full p-3 border-2 border-white rounded-md bg-transparent text-white font-medium"
+                    className="w-full p-3 border-2 border-white rounded-md bg-transparent text-white font-medium focus:ring-2 focus:ring-gold"
                   />
                   <div className="flex justify-between">
-                    <button type="button" onClick={prevStep} className="text-gold font-semibold hover:underline">
+                    <button
+                      type="button"
+                      onClick={prevStep}
+                      className="text-gold font-semibold hover:underline"
+                    >
                       Back
                     </button>
-                    <button type="button" onClick={nextStep} className="text-gold font-semibold hover:underline">
+                    <button
+                      type="button"
+                      onClick={nextStep}
+                      className="text-gold font-semibold hover:underline"
+                    >
                       Next
                     </button>
                   </div>
@@ -133,7 +161,7 @@ const LandingPage = () => {
                     value={mpesaNumber}
                     onChange={(e) => setMpesaNumber(e.target.value)}
                     required
-                    className="w-full p-3 border-2 border-white rounded-md bg-transparent text-white font-medium"
+                    className="w-full p-3 border-2 border-white rounded-md bg-transparent text-white font-medium focus:ring-2 focus:ring-gold"
                   />
                   <input
                     type="number"
@@ -141,14 +169,14 @@ const LandingPage = () => {
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     required
-                    className="w-full p-3 border-2 border-white rounded-md bg-transparent text-white font-medium"
+                    className="w-full p-3 border-2 border-white rounded-md bg-transparent text-white font-medium focus:ring-2 focus:ring-gold"
                   />
                   <button
                     type="button"
                     onClick={handlePay}
                     className="p-2 bg-gold text-black font-semibold rounded-md border border-white transition-all hover:bg-black hover:text-gold focus:outline-none focus:ring-4 focus:ring-gold"
                   >
-                    Pay
+                    {loading ? 'Processing...' : 'Pay'}
                   </button>
 
                   {paymentConfirmed && (
@@ -169,7 +197,7 @@ const LandingPage = () => {
                       className="flex-grow px-4 py-3 bg-gold text-black font-semibold rounded-md transition-all transform hover:scale-105 hover:bg-yellow-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
                       disabled={!paymentConfirmed}
                     >
-                      Add Shop
+                      {loading ? 'Processing...' : 'Add Shop'}
                     </button>
                   </div>
                 </>
