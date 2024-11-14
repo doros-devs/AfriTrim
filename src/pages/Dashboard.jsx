@@ -3,7 +3,8 @@ import ManageBarbers from "../components/ManageBarbers";
 import ClientEngagement from "../components/ClientEngagement";
 import BarberAppointments from "../components/BarberAppointments";
 import AnalyticsReports from "../components/AnalyticsReports"; // Import AnalyticsReports
-import { FaUserTie, FaCalendarCheck, FaHandshake, FaChartBar } from "react-icons/fa"; 
+import ProfileEdit from "../components/ProfileEdit"; // Import ProfileEdit
+import { FaUserTie, FaCalendarCheck, FaHandshake, FaChartBar, FaUserEdit } from "react-icons/fa"; // Added FaUserEdit for Edit Profile icon
 
 const Dashboard = () => {
   const [activeContent, setActiveContent] = useState("analytics"); // Default set to 'analytics'
@@ -23,6 +24,8 @@ const Dashboard = () => {
         return <ClientEngagement />;
       case "analytics":
         return <AnalyticsReports />; // Render AnalyticsReports
+      case "profileEdit":
+        return <ProfileEdit />; // Render ProfileEdit
       default:
         return null;
     }
@@ -86,6 +89,16 @@ const Dashboard = () => {
             onClick={() => setActiveContent("clientEngagement")}
           >
             <FaHandshake className="inline-block mr-2" /> Client Engagement
+          </li>
+
+          {/* Edit Profile Button */}
+          <li
+            className={`text-lg font-semibold p-2 rounded hover:bg-white hover:text-black cursor-pointer transition-all duration-300 ease-in-out ${
+              activeContent === "profileEdit" ? "bg-white text-black" : ""
+            }`}
+            onClick={() => setActiveContent("profileEdit")}
+          >
+            <FaUserEdit className="inline-block mr-2" /> Edit Profile
           </li>
         </ul>
       </div>

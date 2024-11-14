@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import kymBarbershop from '../assets/kym-barbershop.jpg';
+// import ProfileEdit from './ProfileEdit'; // import your ProfileEdit component
 
 const LandingPage = () => {
   const [showForm, setShowForm] = useState(false);
@@ -10,6 +11,7 @@ const LandingPage = () => {
   const [paymentConfirmed, setPaymentConfirmed] = useState(false);
   const [formStep, setFormStep] = useState(1);
   const [loading, setLoading] = useState(false); // Loading state
+  const [showProfileEdit, setShowProfileEdit] = useState(false); // State to toggle profile edit form
   const navigate = useNavigate();
 
   const handleGetStarted = () => setShowForm(true);
@@ -43,6 +45,10 @@ const LandingPage = () => {
   const nextStep = () => setFormStep((prev) => prev + 1);
   const prevStep = () => setFormStep((prev) => prev - 1);
 
+  const toggleProfileEdit = () => {
+    setShowProfileEdit(!showProfileEdit);
+  };
+
   return (
     <div className="overflow-hidden min-h-screen bg-black text-white">
       {!showForm ? (
@@ -59,6 +65,13 @@ const LandingPage = () => {
               className="p-4 bg-gold text-black border-2 border-gold rounded-full font-semibold hover:bg-black hover:text-white transition-all"
             >
               Get Started
+            </button>
+            {/* Button to toggle Profile Edit */}
+            <button
+              onClick={toggleProfileEdit}
+              className="mt-4 p-4 bg-gold text-black border-2 border-gold rounded-full font-semibold hover:bg-black hover:text-white transition-all"
+            >
+              Edit Profile
             </button>
           </div>
         </div>
@@ -194,10 +207,9 @@ const LandingPage = () => {
                     </button>
                     <button
                       type="submit"
-                      className="flex-grow px-4 py-3 bg-gold text-black font-semibold rounded-md transition-all transform hover:scale-105 hover:bg-yellow-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                      disabled={!paymentConfirmed}
+                      className="px-4 py-2 bg-gold text-black font-semibold rounded-md border border-gold hover:bg-black hover:text-white transition-all"
                     >
-                      {loading ? 'Processing...' : 'Add Shop'}
+                      Submit
                     </button>
                   </div>
                 </>
@@ -206,6 +218,9 @@ const LandingPage = () => {
           </div>
         </div>
       )}
+
+      {/* Conditionally render the Profile Edit form */}
+      {showProfileEdit && <ProfileEdit />}
     </div>
   );
 };
