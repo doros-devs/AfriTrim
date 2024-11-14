@@ -21,7 +21,7 @@ const LandingPage = () => {
           Desired Day From Now On And Easily Style Your Hair.
         </p>
         <div className="flex space-x-4">
-          <button className="bg-gold text-black px-6 py-3 rounded hover:bg-mediumGray">
+          <button className="bg-gold text-black px-6 py-3 rounded hover:bg-yellow-600">
             Booking
           </button>
           <Link
@@ -30,7 +30,7 @@ const LandingPage = () => {
             duration={500}
             className="cursor-pointer"
           >
-            <button className="border border-gold px-6 py-3 rounded text-white hover:bg-darkGray">
+            <button className="border border-gold px-6 py-3 rounded text-gold hover:bg-yellow-800">
               Read More
             </button>
           </Link>
@@ -58,15 +58,15 @@ const LandingPage = () => {
             quality for you.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-blackGray p-6 rounded shadow-md">
+            <div className="bg-gray-800 p-6 rounded shadow-md">
               <h3 className="text-2xl font-bold mb-4">Haircut</h3>
               <p>Experience the best haircut with our professional team.</p>
             </div>
-            <div className="bg-blackGray p-6 rounded shadow-md">
+            <div className="bg-gray-800 p-6 rounded shadow-md">
               <h3 className="text-2xl font-bold mb-4">Shaving</h3>
               <p>Get a clean, stylish shave with our experienced barbers.</p>
             </div>
-            <div className="bg-blackGray p-6 rounded shadow-md">
+            <div className="bg-gray-800 p-6 rounded shadow-md">
               <h3 className="text-2xl font-bold mb-4">Beard Trim</h3>
               <p>Keep your beard looking sharp with our trimming services.</p>
             </div>
@@ -82,7 +82,7 @@ const LandingPage = () => {
             Feel free to reach out to us and book your next haircut or get more
             information about our services.
           </p>
-          <button className="bg-gold text-black px-6 py-3 rounded hover:bg-mediumGray">
+          <button className="bg-gold text-black px-6 py-3 rounded hover:bg-yellow-600">
             Get In Touch
           </button>
         </div>
