@@ -5,6 +5,9 @@ import ManageShops from './components/ManageShops';
 import Login from './components/SuperAdmin';
 import Navbar from './components/Navbar';
 import LandingPage from './components/LandingPage';
+import SuperAdmin from './components/SuperAdmin';
+import ShopCard from './components/ShopCard';
+// import Terms from './components/Terms';
 const App = () => {
   return (
     <div>
@@ -14,6 +17,9 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/manage-shops" element={<ManageShops />} />
+        <Route path="/superadmin" element={<SuperAdmin />} />
+        <Route path="/shopcard" element={<ShopCard />} />
+        {/* <Route path="/terms" element={<Terms />} /> */}
       </Routes>
     </div>
   );
