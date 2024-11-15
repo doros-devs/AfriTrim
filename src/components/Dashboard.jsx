@@ -24,6 +24,7 @@
 import React, { useState, useEffect } from "react";
 import ShopCard from "./ShopCard";
 import ShopForm from "./ShopForm";
+import Sidebar from "./Sidebar";
 
 const SuperAdminDashboard = () => {
   const [shops, setShops] = useState([]);

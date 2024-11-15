@@ -7,6 +7,7 @@ import Navbar from './components/Navbar';
 import LandingPage from './components/LandingPage';
 import SuperAdmin from './components/SuperAdmin';
 import ShopCard from './components/ShopCard';
+import ShopForm from './components/ShopForm';
 // import Terms from './components/Terms';
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/manage-shops" element={<ManageShops />} />
         <Route path="/superadmin" element={<SuperAdmin />} />
         <Route path="/shopcard" element={<ShopCard />} />
+        <Route path="/shopform" element={<ShopForm />} />
         {/* <Route path="/terms" element={<Terms />} /> */}
       </Routes>
     </div>

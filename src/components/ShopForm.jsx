@@ -1,4 +1,3 @@
-// components/ShopForm.js
 import React, { useState, useEffect } from "react";
 
 const ShopForm = ({ onSubmit, shopToEdit }) => {
