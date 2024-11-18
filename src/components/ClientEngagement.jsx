@@ -1,81 +1,66 @@
-import React, { useState, useEffect } from 'react';
+// src/ClientEngagement.js
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setSearchQuery,
+  setSelectedClientId,
+  setActiveTab,
+  setPromotion,
+  setMessageInput,
+  sendPromotion,
+  sendMessage,
+  receiveNewMessage,
+  addNotification,
+  clearNotification,
+} from "../redux/clientEngagementSlice";
 
 const ClientEngagement = () => {
-  const [clients, setClients] = useState([
-    { id: 1, name: 'John Doe', messages: [], feedback: 'Great service!', newMessage: false },
-    { id: 2, name: 'Jane Smith', messages: [], feedback: 'Love the new haircut!', newMessage: false },
-    { id: 3, name: 'Sam Wilson', messages: [], feedback: '', newMessage: false },
-  ]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filteredClients, setFilteredClients] = useState(clients);
-  const [selectedClientId, setSelectedClientId] = useState(null);
-  const [activeTab, setActiveTab] = useState('promotions');
-  const [promotion, setPromotion] = useState('');
-  const [messageInput, setMessageInput] = useState('');
-  const [notifications, setNotifications] = useState([]);
+  const dispatch = useDispatch();
+  const {
+    clients,
+    searchQuery,
+    filteredClients,
+    selectedClientId,
+    activeTab,
+    promotion,
+    messageInput,
+    notifications,
+  } = useSelector((state) => state.clientEngagement);
 
-  const selectedClient = clients.find(client => client.id === selectedClientId);
+  const selectedClient = clients.find(
+    (client) => client.id === selectedClientId
+  );
 
-  // Update filtered clients based on search query
-  useEffect(() => {
-    setFilteredClients(
-      clients.filter(client => client.name.toLowerCase().includes(searchQuery.toLowerCase()))
-    );
-  }, [searchQuery, clients]);
-
-  // Function to simulate receiving new messages from clients
+  // Handle new messages (simulating with an interval)
   useEffect(() => {
     const interval = setInterval(() => {
       const randomClientId = Math.floor(Math.random() * clients.length) + 1;
-      const message = { text: 'New message from client', fromOwner: false };
-      setClients(prevClients =>
-        prevClients.map(client =>
-          client.id === randomClientId
-            ? { ...client, newMessage: true, messages: [...client.messages, message] }
-            : client
-        )
-      );
-      // Add notification for the new message
-      setNotifications(prev => [
-        ...prev,
-        { clientId: randomClientId, message: message.text }
-      ]);
+      const message = { text: "New message from client", fromOwner: false };
+      dispatch(receiveNewMessage({ clientId: randomClientId, message }));
     }, 15000); // Simulate message every 15 seconds
+
     return () => clearInterval(interval);
-  }, []);
+  }, [dispatch, clients]);
+
+  const handleSearchQueryChange = (e) => {
+    dispatch(setSearchQuery(e.target.value));
+  };
 
   const handleSendPromotion = () => {
-    if (promotion.trim() && selectedClientId) {
-      alert(`Promotion sent to ${selectedClient.name}: ${promotion}`);
-      // Reset search after sending promotion
-      setSearchQuery('');
-      setFilteredClients([]);
-      setSelectedClientId(null);
-      setPromotion('');
-    }
+    dispatch(sendPromotion());
+    dispatch(setSearchQuery(""));
+    dispatch(setSelectedClientId(null));
   };
 
   const handleSendMessage = () => {
-    if (messageInput.trim() && selectedClientId) {
-      const updatedClients = clients.map(client =>
-        client.id === selectedClientId
-          ? { ...client, messages: [...client.messages, { text: messageInput, fromOwner: true }] }
-          : client
-      );
-      setClients(updatedClients);
-      setMessageInput('');
-      // Reset search after sending message
-      setSearchQuery('');
-      setFilteredClients([]);
-      setSelectedClientId(null);
-    }
+    dispatch(sendMessage());
+    dispatch(setSearchQuery(""));
+    dispatch(setSelectedClientId(null));
   };
 
   const handleNotificationClick = (clientId) => {
-    setSelectedClientId(clientId);
-    setNotifications(prevNotifications =>
-      prevNotifications.filter(notification => notification.clientId !== clientId)
-    );
+    dispatch(setSelectedClientId(clientId));
+    dispatch(clearNotification(clientId));
   };
 
   return (
@@ -83,7 +68,9 @@ const ClientEngagement = () => {
       {/* Main content */}
       <main className="flex-1 p-8 bg-gray-900">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-yellow-500">Client Engagement</h2>
+          <h2 className="text-2xl font-bold text-yellow-500">
+            Client Engagement
+          </h2>
           <div className="relative">
             {/* Notifications */}
             <span className="absolute top-0 right-0 bg-yellow-500 text-black rounded-full text-xs w-6 h-6 flex items-center justify-center">
@@ -96,7 +83,12 @@ const ClientEngagement = () => {
                   onClick={() => handleNotificationClick(notification.clientId)}
                   className="p-3 cursor-pointer"
                 >
-                  New message from {clients.find(client => client.id === notification.clientId).name}
+                  New message from{" "}
+                  {
+                    clients.find(
+                      (client) => client.id === notification.clientId
+                    ).name
+                  }
                 </li>
               ))}
             </ul>
@@ -109,16 +101,20 @@ const ClientEngagement = () => {
             type="text"
             placeholder="Search clients..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={handleSearchQueryChange}
             className="w-full p-3 rounded-md bg-gray-700 text-white"
           />
           {searchQuery && (
             <ul className="bg-gray-800 rounded-md mt-2 max-h-40 overflow-y-auto">
-              {filteredClients.map(client => (
+              {filteredClients.map((client) => (
                 <li
                   key={client.id}
-                  onClick={() => setSelectedClientId(client.id)}
-                  className={`p-3 cursor-pointer ${client.id === selectedClientId ? 'bg-yellow-500 text-black' : 'bg-gray-700'}`}
+                  onClick={() => dispatch(setSelectedClientId(client.id))}
+                  className={`p-3 cursor-pointer ${
+                    client.id === selectedClientId
+                      ? "bg-yellow-500 text-black"
+                      : "bg-gray-700"
+                  }`}
                 >
                   {client.name}
                   {client.newMessage && (
@@ -137,32 +133,46 @@ const ClientEngagement = () => {
           <>
             <div className="flex space-x-4 mb-8">
               <button
-                onClick={() => setActiveTab('promotions')}
-                className={`px-4 py-2 rounded-md ${activeTab === 'promotions' ? 'bg-yellow-500 text-black' : 'bg-gray-700'}`}
+                onClick={() => dispatch(setActiveTab("promotions"))}
+                className={`px-4 py-2 rounded-md ${
+                  activeTab === "promotions"
+                    ? "bg-yellow-500 text-black"
+                    : "bg-gray-700"
+                }`}
               >
                 Promotions
               </button>
               <button
-                onClick={() => setActiveTab('messages')}
-                className={`px-4 py-2 rounded-md ${activeTab === 'messages' ? 'bg-yellow-500 text-black' : 'bg-gray-700'}`}
+                onClick={() => dispatch(setActiveTab("messages"))}
+                className={`px-4 py-2 rounded-md ${
+                  activeTab === "messages"
+                    ? "bg-yellow-500 text-black"
+                    : "bg-gray-700"
+                }`}
               >
                 Messages
               </button>
               <button
-                onClick={() => setActiveTab('feedback')}
-                className={`px-4 py-2 rounded-md ${activeTab === 'feedback' ? 'bg-yellow-500 text-black' : 'bg-gray-700'}`}
+                onClick={() => dispatch(setActiveTab("feedback"))}
+                className={`px-4 py-2 rounded-md ${
+                  activeTab === "feedback"
+                    ? "bg-yellow-500 text-black"
+                    : "bg-gray-700"
+                }`}
               >
                 Feedback
               </button>
             </div>
 
             {/* Tab Content */}
-            {activeTab === 'promotions' && (
+            {activeTab === "promotions" && (
               <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-semibold text-yellow-500 mb-4">Send Promotion to {selectedClient.name}</h2>
+                <h2 className="text-2xl font-semibold text-yellow-500 mb-4">
+                  Send Promotion to {selectedClient.name}
+                </h2>
                 <textarea
                   value={promotion}
-                  onChange={(e) => setPromotion(e.target.value)}
+                  onChange={(e) => dispatch(setPromotion(e.target.value))}
                   placeholder="Write your promotion here..."
                   className="w-full p-4 rounded-md bg-gray-900 text-white"
                 />
@@ -175,15 +185,21 @@ const ClientEngagement = () => {
               </div>
             )}
 
-            {activeTab === 'messages' && (
+            {activeTab === "messages" && (
               <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-semibold text-yellow-500 mb-4">Messages with {selectedClient.name}</h2>
+                <h2 className="text-2xl font-semibold text-yellow-500 mb-4">
+                  Messages with {selectedClient.name}
+                </h2>
                 <div className="space-y-4 bg-gray-900 p-5 rounded-md shadow-md max-h-60 overflow-y-auto">
                   {selectedClient.messages.length > 0 ? (
                     selectedClient.messages.map((message, index) => (
                       <div
                         key={index}
-                        className={`p-4 rounded-md ${message.fromOwner ? 'bg-yellow-500 text-black' : 'bg-gray-800'}`}
+                        className={`p-4 rounded-md ${
+                          message.fromOwner
+                            ? "bg-yellow-500 text-black"
+                            : "bg-gray-800"
+                        }`}
                       >
                         {message.text}
                       </div>
@@ -196,7 +212,7 @@ const ClientEngagement = () => {
                   <input
                     type="text"
                     value={messageInput}
-                    onChange={(e) => setMessageInput(e.target.value)}
+                    onChange={(e) => dispatch(setMessageInput(e.target.value))}
                     placeholder="Type a message..."
                     className="flex-1 p-4 bg-gray-900 rounded-md"
                   />
@@ -210,15 +226,19 @@ const ClientEngagement = () => {
               </div>
             )}
 
-            {activeTab === 'feedback' && (
+            {activeTab === "feedback" && (
               <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-semibold text-yellow-500 mb-4">Client Feedback</h2>
-                <p>{selectedClient.feedback || 'No feedback yet.'}</p>
+                <h2 className="text-2xl font-semibold text-yellow-500 mb-4">
+                  Client Feedback
+                </h2>
+                <p>{selectedClient.feedback || "No feedback yet."}</p>
               </div>
             )}
           </>
         ) : (
-          <div className="text-center text-xl">Select a client to start engagement</div>
+          <div className="text-center text-xl">
+            Select a client to start engagement
+          </div>
         )}
       </main>
     </div>

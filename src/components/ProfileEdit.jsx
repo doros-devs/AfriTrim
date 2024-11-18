@@ -1,26 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setProfile, updateProfileField } from "../redux/profileSlice"; // Import actions
 
 const ProfileEdit = () => {
-  // Initial profile data (you may fetch this from an API)
-  const [profileData, setProfileData] = useState({
-    name: "John Doe", // Example name
-    email: "johndoe@example.com", // Example email
-    phone: "123-456-7890", // Example phone
-    avatar: "", // Profile picture URL or base64 string
-    services: "", // Services offered
-    location: "", // Location
-    openingHours: "", // Opening and Closing hours
-  });
+  const dispatch = useDispatch();
+
+  // Get profile data from the Redux store
+  const profileData = useSelector((state) => state.profile);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setProfileData({ ...profileData, [name]: value });
+    dispatch(updateProfileField({ field: name, value })); // Dispatch action to update profile field
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Here you can handle the form submission, e.g., call an API to save the profile data
     console.log("Profile updated:", profileData);
+    // Optionally, you can dispatch a setProfile action to save the profile data to Redux store
+    // dispatch(setProfile(profileData)); // Uncomment if you want to explicitly set the profile
   };
 
   return (
@@ -84,7 +82,11 @@ const ProfileEdit = () => {
             type="file"
             id="avatar"
             name="avatar"
-            onChange={(e) => setProfileData({ ...profileData, avatar: e.target.files[0] })}
+            onChange={(e) => {
+              const file = e.target.files[0];
+              // You might want to handle file upload here (e.g., convert to base64 or upload to server)
+              dispatch(updateProfileField({ field: "avatar", value: file }));
+            }}
             className="w-full p-3 rounded-md bg-gray-900 text-white border-2 border-gray-700 focus:border-gold focus:ring-2 focus:ring-gold"
           />
         </div>
@@ -122,7 +124,10 @@ const ProfileEdit = () => {
 
         {/* Opening and Closing Hours */}
         <div className="mb-4">
-          <label htmlFor="openingHours" className="block text-lg mb-2 text-white">
+          <label
+            htmlFor="openingHours"
+            className="block text-lg mb-2 text-white"
+          >
             Opening and Closing Hours
           </label>
           <input

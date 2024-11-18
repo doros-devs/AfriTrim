@@ -1,13 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux"; // Import hooks from react-redux
 import ManageBarbers from "../components/ManageBarbers";
 import ClientEngagement from "../components/ClientEngagement";
 import BarberAppointments from "../components/BarberAppointments";
-import AnalyticsReports from "../components/AnalyticsReports"; // Import AnalyticsReports
-import ProfileEdit from "../components/ProfileEdit"; // Import ProfileEdit
-import { FaUserTie, FaCalendarCheck, FaHandshake, FaChartBar, FaUserEdit } from "react-icons/fa"; // Added FaUserEdit for Edit Profile icon
+import AnalyticsReports from "../components/AnalyticsReports";
+import ProfileEdit from "../components/ProfileEdit";
+import {
+  FaUserTie,
+  FaCalendarCheck,
+  FaHandshake,
+  FaChartBar,
+  FaUserEdit,
+} from "react-icons/fa"; // Added FaUserEdit for Edit Profile icon
+import { setActiveContent } from "../redux/dashboardSlice"; // Import setActiveContent action
 
 const Dashboard = () => {
-  const [activeContent, setActiveContent] = useState("analytics"); // Default set to 'analytics'
+  const dispatch = useDispatch();
+
+  // Get activeContent from Redux state
+  const activeContent = useSelector((state) => state.dashboard.activeContent);
 
   const handleLogout = () => {
     window.location.href = "/";
@@ -23,9 +34,9 @@ const Dashboard = () => {
       case "clientEngagement":
         return <ClientEngagement />;
       case "analytics":
-        return <AnalyticsReports />; // Render AnalyticsReports
+        return <AnalyticsReports />;
       case "profileEdit":
-        return <ProfileEdit />; // Render ProfileEdit
+        return <ProfileEdit />;
       default:
         return null;
     }
@@ -37,7 +48,7 @@ const Dashboard = () => {
       style={{
         backgroundColor: "black", // Set background color to black
         width: "100vw",
-        height: "100vh"
+        height: "100vh",
       }}
     >
       {/* Sidebar */}
@@ -49,14 +60,14 @@ const Dashboard = () => {
         <div className="flex justify-center items-center mb-8">
           <h1 className="text-3xl font-bold text-gold">AfriTrim</h1>
         </div>
-        
+
         <ul className="space-y-4">
           {/* Analytics Button */}
           <li
             className={`text-lg font-semibold p-2 rounded hover:bg-white hover:text-black cursor-pointer transition-all duration-300 ease-in-out ${
               activeContent === "analytics" ? "bg-white text-black" : ""
             }`}
-            onClick={() => setActiveContent("analytics")}
+            onClick={() => dispatch(setActiveContent("analytics"))} // Dispatch action to set active content
           >
             <FaChartBar className="inline-block mr-2" /> Analytics
           </li>
@@ -66,7 +77,7 @@ const Dashboard = () => {
             className={`text-lg font-semibold p-2 rounded hover:bg-white hover:text-black cursor-pointer transition-all duration-300 ease-in-out ${
               activeContent === "manageBarbers" ? "bg-white text-black" : ""
             }`}
-            onClick={() => setActiveContent("manageBarbers")}
+            onClick={() => dispatch(setActiveContent("manageBarbers"))}
           >
             <FaUserTie className="inline-block mr-2" /> Manage Barbers
           </li>
@@ -76,7 +87,7 @@ const Dashboard = () => {
             className={`text-lg font-semibold p-2 rounded hover:bg-white hover:text-black cursor-pointer transition-all duration-300 ease-in-out ${
               activeContent === "appointments" ? "bg-white text-black" : ""
             }`}
-            onClick={() => setActiveContent("appointments")}
+            onClick={() => dispatch(setActiveContent("appointments"))}
           >
             <FaCalendarCheck className="inline-block mr-2" /> Appointments
           </li>
@@ -86,7 +97,7 @@ const Dashboard = () => {
             className={`text-lg font-semibold p-2 rounded hover:bg-white hover:text-black cursor-pointer transition-all duration-300 ease-in-out ${
               activeContent === "clientEngagement" ? "bg-white text-black" : ""
             }`}
-            onClick={() => setActiveContent("clientEngagement")}
+            onClick={() => dispatch(setActiveContent("clientEngagement"))}
           >
             <FaHandshake className="inline-block mr-2" /> Client Engagement
           </li>
@@ -96,7 +107,7 @@ const Dashboard = () => {
             className={`text-lg font-semibold p-2 rounded hover:bg-white hover:text-black cursor-pointer transition-all duration-300 ease-in-out ${
               activeContent === "profileEdit" ? "bg-white text-black" : ""
             }`}
-            onClick={() => setActiveContent("profileEdit")}
+            onClick={() => dispatch(setActiveContent("profileEdit"))}
           >
             <FaUserEdit className="inline-block mr-2" /> Edit Profile
           </li>

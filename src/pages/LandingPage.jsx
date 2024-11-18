@@ -1,52 +1,66 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import kymBarbershop from '../assets/kym-barbershop.jpg';
-// import ProfileEdit from './ProfileEdit'; // import your ProfileEdit component
+import React from "react";
+import { useDispatch, useSelector } from "react-redux"; // Import hooks from react-redux
+import { useNavigate } from "react-router-dom";
+import kymBarbershop from "../assets/kym-barbershop.jpg";
+import {
+  toggleShowForm,
+  setPaymentSuccessful,
+  setMpesaNumber,
+  setAmount,
+  setPaymentConfirmed,
+  setFormStep,
+  setLoading,
+  toggleProfileEdit,
+} from "../redux/landingPageSlice"; // Import the actions
 
 const LandingPage = () => {
-  const [showForm, setShowForm] = useState(false);
-  const [paymentSuccessful, setPaymentSuccessful] = useState(false);
-  const [mpesaNumber, setMpesaNumber] = useState('');
-  const [amount, setAmount] = useState('');
-  const [paymentConfirmed, setPaymentConfirmed] = useState(false);
-  const [formStep, setFormStep] = useState(1);
-  const [loading, setLoading] = useState(false); // Loading state
-  const [showProfileEdit, setShowProfileEdit] = useState(false); // State to toggle profile edit form
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleGetStarted = () => setShowForm(true);
+  const {
+    showForm,
+    paymentSuccessful,
+    mpesaNumber,
+    amount,
+    paymentConfirmed,
+    formStep,
+    loading,
+    showProfileEdit,
+  } = useSelector((state) => state.landingPage); // Get state from Redux
+
+  const handleGetStarted = () => dispatch(toggleShowForm());
 
   const handleAddShop = (event) => {
     event.preventDefault();
     if (paymentConfirmed) {
-      setPaymentSuccessful(true);
+      dispatch(setPaymentSuccessful(true));
     } else {
-      alert('Please confirm that payment is successful');
+      alert("Please confirm that payment is successful");
     }
   };
 
   const handlePaymentSuccess = () => {
-    setLoading(true);
+    dispatch(setLoading(true));
     setTimeout(() => {
-      setLoading(false);
-      navigate('/dashboard');
+      dispatch(setLoading(false));
+      navigate("/dashboard");
     }, 1500);
   };
 
   const handlePay = () => {
-    setLoading(true);
+    dispatch(setLoading(true));
     setTimeout(() => {
-      setLoading(false);
-      setPaymentConfirmed(true);
-      setPaymentSuccessful(true);
+      dispatch(setLoading(false));
+      dispatch(setPaymentConfirmed(true));
+      dispatch(setPaymentSuccessful(true));
     }, 1500);
   };
 
-  const nextStep = () => setFormStep((prev) => prev + 1);
-  const prevStep = () => setFormStep((prev) => prev - 1);
+  const nextStep = () => dispatch(setFormStep(formStep + 1));
+  const prevStep = () => dispatch(setFormStep(formStep - 1));
 
   const toggleProfileEdit = () => {
-    setShowProfileEdit(!showProfileEdit);
+    dispatch(toggleProfileEdit());
   };
 
   return (
@@ -58,8 +72,12 @@ const LandingPage = () => {
         >
           <div className="absolute inset-0 bg-black opacity-60"></div>
           <div className="relative z-10 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">Welcome to Afri Trim</h1>
-            <p className="text-lg md:text-xl text-gray-200 mb-8">Where we fix your looks</p>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              Welcome to Afri Trim
+            </h1>
+            <p className="text-lg md:text-xl text-gray-200 mb-8">
+              Where we fix your looks
+            </p>
             <button
               onClick={handleGetStarted}
               className="p-4 bg-gold text-black border-2 border-gold rounded-full font-semibold hover:bg-black hover:text-white transition-all"
@@ -82,13 +100,18 @@ const LandingPage = () => {
         >
           <div className="absolute inset-0 bg-black opacity-60"></div>
           <div className="relative z-10 bg-black text-white p-8 rounded-md border-4 border-white max-w-md w-full">
-            <h1 className="text-2xl font-semibold mb-6 text-center">Payment Successful!</h1>
-            <p className="text-lg text-center mb-8">Your payment has been processed. You can now proceed to the dashboard.</p>
+            <h1 className="text-2xl font-semibold mb-6 text-center">
+              Payment Successful!
+            </h1>
+            <p className="text-lg text-center mb-8">
+              Your payment has been processed. You can now proceed to the
+              dashboard.
+            </p>
             <button
               onClick={handlePaymentSuccess}
               className="w-full p-3 bg-gold text-black font-semibold rounded-md transition-all transform hover:scale-105"
             >
-              {loading ? 'Processing...' : 'Go to Dashboard'}
+              {loading ? "Processing..." : "Go to Dashboard"}
             </button>
           </div>
         </div>
@@ -99,7 +122,9 @@ const LandingPage = () => {
         >
           <div className="absolute inset-0 bg-black opacity-60"></div>
           <div className="relative z-10 bg-black text-white p-8 rounded-md border-4 border-white max-w-xl w-full">
-            <h1 className="text-2xl font-semibold mb-6 text-center text-white">Add Your Shop</h1>
+            <h1 className="text-2xl font-semibold mb-6 text-center text-white">
+              Add Your Shop
+            </h1>
             {/* Progress bar */}
             <div className="w-full bg-gray-600 rounded-full h-2 mb-4">
               <div
@@ -172,7 +197,7 @@ const LandingPage = () => {
                     type="text"
                     placeholder="MPesa Phone Number"
                     value={mpesaNumber}
-                    onChange={(e) => setMpesaNumber(e.target.value)}
+                    onChange={(e) => dispatch(setMpesaNumber(e.target.value))}
                     required
                     className="w-full p-3 border-2 border-white rounded-md bg-transparent text-white font-medium focus:ring-2 focus:ring-gold"
                   />
@@ -180,7 +205,7 @@ const LandingPage = () => {
                     type="number"
                     placeholder="Amount"
                     value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
+                    onChange={(e) => dispatch(setAmount(e.target.value))}
                     required
                     className="w-full p-3 border-2 border-white rounded-md bg-transparent text-white font-medium focus:ring-2 focus:ring-gold"
                   />
@@ -189,7 +214,7 @@ const LandingPage = () => {
                     onClick={handlePay}
                     className="p-2 bg-gold text-black font-semibold rounded-md border border-white transition-all hover:bg-black hover:text-gold focus:outline-none focus:ring-4 focus:ring-gold"
                   >
-                    {loading ? 'Processing...' : 'Pay'}
+                    {loading ? "Processing..." : "Pay"}
                   </button>
 
                   {paymentConfirmed && (
