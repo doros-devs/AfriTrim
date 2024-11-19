@@ -8,6 +8,8 @@ import LandingPage from './components/LandingPage';
 import SuperAdmin from './components/SuperAdmin';
 import ShopCard from './components/ShopCard';
 import ShopForm from './components/ShopForm';
+import Sidebar from './components/Sidebar';
+import { ShopContext } from './components/ShopContext';
 // import Terms from './components/Terms';
 const App = () => {
   return (
@@ -21,6 +23,8 @@ const App = () => {
         <Route path="/superadmin" element={<SuperAdmin />} />
         <Route path="/shopcard" element={<ShopCard />} />
         <Route path="/shopform" element={<ShopForm />} />
+        <Route path="/sidebar" element={<Sidebar />} /> 
+        <Route path="/shopcontext" element={<ShopContext />} />
         {/* <Route path="/terms" element={<Terms />} /> */}
       </Routes>
     </div>

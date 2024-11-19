@@ -78,28 +78,28 @@ const Navbar = () => {
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 bg-black text-gold rounded-lg shadow-lg w-48">
                   <ul>
-                    <li>
+                    <ul>
                       <button
                         onClick={() => navigate("/General login")}
                         className="block px-4 py-2 text-left hover:bg-mediumGray"
                       >
                         General Login
                       </button>
-                    </li>
-                    <li>
+                    </ul>
+                    <ul>
                       <button
                         onClick={() => navigate("/login")}
                         className="block px-4 py-2 text-left hover:bg-mediumGray"
                       >
                         Super Admin Login
                       </button>
-                    </li>
+                    </ul>
                   </ul>
                 </div>
               )}
             </div>
             <button
-              onClick={() => navigate("/signup")}
+              onClick={() => navigate("/Signup")}
               className="bg-gold text-black px-4 py-2 rounded hover:bg-mediumGray"
             >
               Sign Up
