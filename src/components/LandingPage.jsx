@@ -1,8 +1,11 @@
 import React from "react";
 import Navbar from "./Navbar";
 import { Link } from "react-scroll";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
+  const navigate = useNavigate();
+
   return (
     <div>
       {/* Navbar */}
@@ -11,18 +14,22 @@ const LandingPage = () => {
       {/* Hero Section */}
       <section
         id="home"
-        className="bg-black text-gold min-h-screen flex flex-col items-center justify-center text-center"
+        className="bg-black text-yellow-400 min-h-screen flex flex-col items-center justify-center text-center"
       >
-        <h1 className="text-5xl font-bold mb-6">
+        <h1 className="text-6xl font-extrabold mb-8">
           The Best Men's Hair Salon In Your City
         </h1>
-        <p className="text-xl mb-6">
-          Experience The Best New Hairstyles In Our Hair Salon, Just Book Your
-          Desired Day From Now On And Easily Style Your Hair.
+        <p className="text-2xl mb-8 max-w-3xl leading-relaxed">
+          Experience the best new hairstyles in our hair salon. Just book your
+          desired day now and easily style your hair with the best professionals.
         </p>
-        <div className="flex space-x-4">
-          <button className="bg-gold text-black px-6 py-3 rounded hover:bg-yellow-600">
-            Booking
+        <div className="flex space-x-6">
+          {/* Navigate to the dashboard */}
+          <button
+            onClick={() => navigate("/dashboard")}
+            className="bg-yellow-400 text-black font-bold px-8 py-4 rounded-lg hover:bg-yellow-500 transition transform hover:scale-105"
+          >
+            Go to Dashboard
           </button>
           <Link
             to="services"
@@ -30,61 +37,10 @@ const LandingPage = () => {
             duration={500}
             className="cursor-pointer"
           >
-            <button className="border border-gold px-6 py-3 rounded text-gold hover:bg-yellow-800">
+            <button className="border-2 border-yellow-400 px-8 py-4 rounded-lg text-yellow-400 font-bold hover:bg-yellow-600 hover:text-black transition transform hover:scale-105">
               Read More
             </button>
           </Link>
-        </div>
-      </section>
-
-      {/* About Us Section */}
-      <section id="about-us" className="bg-black text-gold p-12">
-        <div className="container mx-auto">
-          <h2 className="text-4xl font-bold mb-6">About Us</h2>
-          <p className="text-xl">
-            We offer the best new hairstyles in our salon with professional
-            beauticians. Our branches are growing and providing excellent
-            service to our clients.
-          </p>
-        </div>
-      </section>
-
-      {/* Services Section */}
-      <section id="services" className="bg-black text-gold p-12">
-        <div className="container mx-auto">
-          <h2 className="text-4xl font-bold mb-6">Our Services</h2>
-          <p className="mb-6 text-xl">
-            The number of services we offer is small but comes with the best
-            quality for you.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-gray-800 p-6 rounded shadow-md">
-              <h3 className="text-2xl font-bold mb-4">Haircut</h3>
-              <p>Experience the best haircut with our professional team.</p>
-            </div>
-            <div className="bg-gray-800 p-6 rounded shadow-md">
-              <h3 className="text-2xl font-bold mb-4">Shaving</h3>
-              <p>Get a clean, stylish shave with our experienced barbers.</p>
-            </div>
-            <div className="bg-gray-800 p-6 rounded shadow-md">
-              <h3 className="text-2xl font-bold mb-4">Beard Trim</h3>
-              <p>Keep your beard looking sharp with our trimming services.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Us Section */}
-      <section id="contact-us" className="bg-black text-gold p-12">
-        <div className="container mx-auto">
-          <h2 className="text-4xl font-bold mb-6">Contact Us</h2>
-          <p className="text-xl mb-6">
-            Feel free to reach out to us and book your next haircut or get more
-            information about our services.
-          </p>
-          <button className="bg-gold text-black px-6 py-3 rounded hover:bg-yellow-600">
-            Get In Touch
-          </button>
         </div>
       </section>
     </div>
