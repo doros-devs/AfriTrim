@@ -50,7 +50,7 @@ const Sidebar = () => {
         {/* Barbershop List */}
         <li>
           <Link
-            to="/dashboard/barbershoplist"
+            to="/dashboard/barbershopslist"
             className="flex items-center space-x-4 text-lg hover:text-yellow-300 transition-colors"
           >
             <FaClipboardList className="text-2xl" />

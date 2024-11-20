@@ -9,7 +9,7 @@ const BarbershopsList = () => {
   useEffect(() => {
     const fetchBarbershops = async () => {
       try {
-        const response = await fetch("https://afritrimbackend.onrender.com/admin/barbershops");
+        const response = await fetch("https://afritrimbackend.onrender.com/admin/barbershop");
         if (!response.ok) {
           throw new Error("Failed to fetch barbershops");
         }

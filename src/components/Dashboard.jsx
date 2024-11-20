@@ -32,8 +32,8 @@ const Dashboard = () => {
             />
             <Route path="manage-shops" element={<ManageShops />} />
             <Route path="shopform" element={<ShopForm />} />
-            <Route path="barbershoplist" element={<BarbershopsList />} />
-            <Route path="barbershops/:id" element={<BarbershopDetails />} /> {/* Correct path for details */}
+            <Route path="barbershopslist" element={<BarbershopsList />} />
+            <Route path="barbershops/:id" element={<BarbershopDetails />} />
           </Routes>
         </div>
       </div>
