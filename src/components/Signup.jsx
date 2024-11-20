@@ -10,8 +10,7 @@ const Signup = () => {
   const [role, setRole] = useState("client");
   const [name, setName] = useState("");
   const navigate = useNavigate();
-  const backendUrl =
-    process.env.REACT_APP_BACKEND_URL || "http://localhost:5555";
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5555";
 
   const handleSignup = async (e) => {
     e.preventDefault();

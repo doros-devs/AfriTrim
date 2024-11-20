@@ -8,7 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const backendUrl =
-    process.env.REACT_APP_BACKEND_URL || "http://localhost:5555";
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:5555";
 
   const handleLogin = async (e) => {
     e.preventDefault();
