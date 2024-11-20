@@ -1,24 +1,57 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setProfile, updateProfileField } from "../redux/profileSlice"; // Import actions
+import React, { useState, useEffect } from "react";
 
 const ProfileEdit = () => {
-  const dispatch = useDispatch();
+  const [profileData, setProfileData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    avatar: null,
+    services: {}, // Contains barber-service mappings
+    location: "",
+    openingHours: "",
+  });
 
-  // Get profile data from the Redux store
-  const profileData = useSelector((state) => state.profile);
+  const [barbers, setBarbers] = useState([
+    // Example list of barbers; you may fetch this list from an API or Redux
+    { id: 1, name: "Barber 1" },
+    { id: 2, name: "Barber 2" },
+  ]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    dispatch(updateProfileField({ field: name, value })); // Dispatch action to update profile field
+    setProfileData({ ...profileData, [name]: value });
+  };
+
+  const handleServiceChange = (e, barberId) => {
+    const { name, checked } = e.target;
+    const updatedServices = { ...profileData.services };
+
+    // Ensure the barber has an entry for services
+    if (!updatedServices[barberId]) {
+      updatedServices[barberId] = [];
+    }
+
+    // Add or remove the service based on checkbox status
+    if (checked) {
+      updatedServices[barberId].push(name);
+    } else {
+      updatedServices[barberId] = updatedServices[barberId].filter(
+        (service) => service !== name
+      );
+    }
+
+    setProfileData({ ...profileData, services: updatedServices });
+  };
+
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    setProfileData({ ...profileData, avatar: file });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you can handle the form submission, e.g., call an API to save the profile data
     console.log("Profile updated:", profileData);
-    // Optionally, you can dispatch a setProfile action to save the profile data to Redux store
-    // dispatch(setProfile(profileData)); // Uncomment if you want to explicitly set the profile
+    // Here you can send the updated profile data to an API or backend
   };
 
   return (
@@ -73,7 +106,7 @@ const ProfileEdit = () => {
           />
         </div>
 
-        {/* Avatar upload (optional) */}
+        {/* Avatar upload */}
         <div className="mb-4">
           <label htmlFor="avatar" className="block text-lg mb-2 text-white">
             Avatar (Profile Picture)
@@ -82,11 +115,7 @@ const ProfileEdit = () => {
             type="file"
             id="avatar"
             name="avatar"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              // You might want to handle file upload here (e.g., convert to base64 or upload to server)
-              dispatch(updateProfileField({ field: "avatar", value: file }));
-            }}
+            onChange={handleAvatarChange}
             className="w-full p-3 rounded-md bg-gray-900 text-white border-2 border-gray-700 focus:border-gold focus:ring-2 focus:ring-gold"
           />
         </div>
@@ -96,14 +125,34 @@ const ProfileEdit = () => {
           <label htmlFor="services" className="block text-lg mb-2 text-white">
             Services Offered
           </label>
-          <textarea
-            id="services"
-            name="services"
-            value={profileData.services}
-            onChange={handleInputChange}
-            className="w-full p-3 rounded-md bg-gray-900 text-white border-2 border-gray-700 focus:border-gold focus:ring-2 focus:ring-gold"
-            placeholder="List the services you offer"
-          />
+          <div>
+            {barbers.map((barber) => (
+              <div key={barber.id} className="mb-4">
+                <h3 className="text-lg text-white">{barber.name}</h3>
+                <div>
+                  {/* List services (you can replace these with actual services) */}
+                  {["Haircut", "Shave", "Trim"].map((service) => (
+                    <div key={service} className="flex items-center space-x-3">
+                      <input
+                        type="checkbox"
+                        id={`${barber.id}-${service}`}
+                        name={service}
+                        checked={profileData.services[barber.id]?.includes(service)}
+                        onChange={(e) => handleServiceChange(e, barber.id)}
+                        className="p-2"
+                      />
+                      <label
+                        htmlFor={`${barber.id}-${service}`}
+                        className="text-white"
+                      >
+                        {service}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Location */}

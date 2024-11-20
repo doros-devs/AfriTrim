@@ -10,7 +10,6 @@ import {
   setPaymentConfirmed,
   setFormStep,
   setLoading,
-  toggleProfileEdit,
 } from "../redux/landingPageSlice"; // Import the actions
 
 const LandingPage = () => {
@@ -25,7 +24,6 @@ const LandingPage = () => {
     paymentConfirmed,
     formStep,
     loading,
-    showProfileEdit,
   } = useSelector((state) => state.landingPage); // Get state from Redux
 
   const handleGetStarted = () => dispatch(toggleShowForm());
@@ -59,10 +57,6 @@ const LandingPage = () => {
   const nextStep = () => dispatch(setFormStep(formStep + 1));
   const prevStep = () => dispatch(setFormStep(formStep - 1));
 
-  const toggleProfileEdit = () => {
-    dispatch(toggleProfileEdit());
-  };
-
   return (
     <div className="overflow-hidden min-h-screen bg-black text-white">
       {!showForm ? (
@@ -83,13 +77,6 @@ const LandingPage = () => {
               className="p-4 bg-gold text-black border-2 border-gold rounded-full font-semibold hover:bg-black hover:text-white transition-all"
             >
               Get Started
-            </button>
-            {/* Button to toggle Profile Edit */}
-            <button
-              onClick={toggleProfileEdit}
-              className="mt-4 p-4 bg-gold text-black border-2 border-gold rounded-full font-semibold hover:bg-black hover:text-white transition-all"
-            >
-              Edit Profile
             </button>
           </div>
         </div>
@@ -243,9 +230,6 @@ const LandingPage = () => {
           </div>
         </div>
       )}
-
-      {/* Conditionally render the Profile Edit form */}
-      {showProfileEdit && <ProfileEdit />}
     </div>
   );
 };
