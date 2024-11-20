@@ -1,18 +1,75 @@
 import React, { useState } from "react";
-import { login, googleSignIn } from "../firebase/auth"; // import the login and googleSignIn functions from the auth.js file in the firebase folder
+import { useNavigate } from "react-router-dom";
+import { login, googleSignIn } from "../firebase/auth";
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    await login(email, password);
+    try {
+      const userCredential = await login(email, password);
+
+      if (userCredential) {
+        const user = userCredential.user;
+        const token = await user.getIdToken();
+        await verifyTokenAndNavigate(token);
+      }
+    } catch (error) {
+      console.error("Login failed", error);
+      alert("Authentication failed. Please try again.");
+    }
   };
 
   const handleGoogleLogin = async () => {
-    await googleSignIn();
+    try {
+      const userCredential = await googleSignIn();
+
+      if (userCredential) {
+        const user = userCredential.user;
+        const token = await user.getIdToken();
+        await verifyTokenAndNavigate(token);
+      }
+    } catch (error) {
+      console.error("Google Login failed", error);
+      alert("Authentication failed. Please try again.");
+    }
   };
+
+const verifyTokenAndNavigate = async (token) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:5555/api/auth/verify",
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const roles = response.data.roles;
+
+    // Navigate to the appropriate dashboard based on roles
+    if (roles.admin) {
+      navigate("/admin-dashboard");
+    } else if (roles.barber) {
+      navigate("/barber-dashboard");
+    } else if (roles.client) {
+      navigate("/client-dashboard");
+    } else {
+      alert("No valid roles found. Redirecting to home page.");
+      navigate("/"); // default route if role is unknown
+    }
+  } catch (error) {
+    console.error("Token verification failed", error);
+    alert("Authentication failed. Please try again.");
+  }
+};
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-black text-white">
