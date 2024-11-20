@@ -39,9 +39,6 @@ const manageBarbersSlice = createSlice({
     setIsViewFormVisible: (state, action) => {
       state.isViewFormVisible = action.payload;
     },
-    setIsActive: (state, action) => {
-      state.isActive = action.payload;
-    },
     setSuccessMessage: (state, action) => {
       state.successMessage = action.payload;
     },
@@ -61,30 +58,21 @@ const manageBarbersSlice = createSlice({
       state.deleteIndex = action.payload;
     },
     addBarber: (state) => {
-      const newBarber = { ...state.barberDetails };
-      state.barbers.push(newBarber);
-      // We don't update successMessage directly in the reducer
-      // It's handled in the component with dispatch
+      state.barbers.push(state.barberDetails);
+      state.barberDetails = initialState.barberDetails;
     },
     updateBarber: (state) => {
-      const updatedBarbers = state.barbers.map((barber, index) =>
-        index === state.isEditMode ? { ...state.barberDetails } : barber
-      );
-      state.barbers = updatedBarbers;
-      // We don't update successMessage directly in the reducer
-      // It's handled in the component with dispatch
+      const index = state.isEditMode;
+      if (index !== false) {
+        state.barbers[index] = state.barberDetails;
+      }
+      state.barberDetails = initialState.barberDetails;
     },
     deleteBarber: (state) => {
-      const updatedBarbers = state.barbers.filter(
-        (_, i) => i !== state.deleteIndex
-      );
-      state.barbers = updatedBarbers;
-      state.showDeleteDialog = false;
-    },
-    searchBarbers: (state) => {
-      return state.barbers.filter((barber) =>
-        barber.name.toLowerCase().includes(state.searchQuery.toLowerCase())
-      );
+      const index = state.deleteIndex;
+      if (index !== null) {
+        state.barbers.splice(index, 1);
+      }
     },
   },
 });
@@ -94,7 +82,6 @@ export const {
   setBarberDetails,
   setIsAddFormVisible,
   setIsViewFormVisible,
-  setIsActive,
   setSuccessMessage,
   setShowButtons,
   setIsEditMode,

@@ -14,7 +14,7 @@ import {
 } from "react-icons/fa"; // Added FaUserEdit for Edit Profile icon
 import { setActiveContent } from "../redux/dashboardSlice"; // Import setActiveContent action
 
-const Dashboard = () => {
+const AdminDashboard = () => {
   const dispatch = useDispatch();
 
   // Get activeContent from Redux state
@@ -53,7 +53,7 @@ const Dashboard = () => {
     >
       {/* Sidebar */}
       <div
-        className="fixed top-0 bottom-0 left-0 w-64 bg-black opacity-90 p-6 flex flex-col space-y-6"
+        className="fixed top-0 left-0 bottom-0 w-64 bg-black opacity-90 p-6 flex flex-col space-y-6"
         style={{ zIndex: 10 }}
       >
         {/* AfriTrim Name Restyled and Centered */}
@@ -116,7 +116,7 @@ const Dashboard = () => {
 
       {/* Main Content */}
       <div
-        className="ml-64 p-6 flex-1"
+        className="ml-64 p-6 flex-1 flex flex-col"
         style={{
           height: "100vh",
           overflowY: activeContent === "analytics" ? "hidden" : "auto", // Disable scroll for Analytics, enable for others
@@ -142,4 +142,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default AdminDashboard;

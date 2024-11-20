@@ -12,7 +12,7 @@ import {
   setLoading,
 } from "../redux/landingPageSlice"; // Import the actions
 
-const LandingPage = () => {
+const MainPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -213,13 +213,13 @@ const LandingPage = () => {
                     <button
                       type="button"
                       onClick={prevStep}
-                      className="px-4 py-2 bg-transparent text-gold font-semibold rounded-md border border-gold hover:bg-gold hover:text-black transition-all"
+                      className="text-gold font-semibold hover:underline"
                     >
                       Back
                     </button>
                     <button
                       type="submit"
-                      className="px-4 py-2 bg-gold text-black font-semibold rounded-md border border-gold hover:bg-black hover:text-white transition-all"
+                      className="text-gold font-semibold hover:underline"
                     >
                       Submit
                     </button>
@@ -234,4 +234,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default MainPage;

@@ -1,4 +1,3 @@
-// tailwind.config.js
 module.exports = {
   content: [
     "./index.html",
@@ -6,11 +5,14 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors:{
-        gold: '#D4AF37', 
-        darkgold: '#B8860B',
-
-      }
+      colors: {
+        gold: '#A68F7B',
+        lightgold: '#736558',
+        lightGray: '#F2F2F2',
+        mediumGray: '#737373',
+        darkGray: '#262626',
+        blackGray: '#0D0D0D',
+      },
     },
   },
   plugins: [],
