@@ -95,7 +95,7 @@ General Login
 </li>
 <li>
 <button
-onClick={() => navigate("/admin-login")}
+onClick={() => navigate("/login")}
 className="block px-4 py-2 text-left hover:bg-yellow-400 w-full"
 >
 Super Admin Login

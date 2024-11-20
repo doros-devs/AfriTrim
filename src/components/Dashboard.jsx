@@ -1,7 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Sidebar from "./Sidebar";
-import Navbar from "./Navbar";
 import ManageShops from "./ManageShops";
 import ShopForm from "./ShopForm";
 import BarbershopsList from "./BarbershopsList"; 
@@ -15,9 +14,6 @@ const Dashboard = () => {
 
       {/* Main Content Area */}
       <div className="ml-[220px] p-8 flex-1">
-        {/* Navbar */}
-        <Navbar />
-
         {/* Dashboard Box */}
         <div className="bg-black/80 border border-yellow-400 rounded-lg shadow-lg p-6">
           <h2 className="text-4xl font-extrabold text-center mb-6">
