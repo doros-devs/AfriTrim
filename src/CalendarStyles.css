@@ -1,0 +1,15 @@
+.calendar {
+    background-color: #1f2937 !important;
+    color: #d1d5db !important;
+  }
+  
+  .react-calendar__tile--active {
+    background-color: #d97706 !important;
+    color: #000 !important;
+  }
+  
+  .react-calendar__tile:hover {
+    background-color: #4b5563 !important;
+    color: #577eb9 !important;
+  }
+  
