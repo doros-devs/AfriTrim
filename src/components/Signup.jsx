@@ -10,13 +10,15 @@ const Signup = () => {
   const [role, setRole] = useState("client");
   const [name, setName] = useState("");
   const navigate = useNavigate();
+  const backendUrl =
+    process.env.REACT_APP_BACKEND_URL || "http://localhost:5555";
 
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
       // Step 1: Send the data to the backend for validation
       const response = await axios.post(
-        "http://localhost:5555/api/users/signup/validate",
+        `${backendUrl}/api/users/signup/validate`,
         {
           role,
           name,
@@ -38,7 +40,7 @@ const Signup = () => {
 
           // Step 3: Send token and user details to backend for verification and storing role information
           const token = await user.getIdToken();
-          await axios.post("http://localhost:5555/api/users/signup/verify", {
+          await axios.post(`${backendUrl}/api/users/signup/verify`, {
             token,
             role,
             name,
@@ -64,7 +66,7 @@ const Signup = () => {
 
         // Send user data for verification and storage
         const response = await axios.post(
-          "http://localhost:5555/api/users/signup/verify",
+          `${backendUrl}/api/users/signup/verify`,
           {
             token,
             role: "client",
@@ -95,7 +97,6 @@ const Signup = () => {
         );
       }
     }
-
   };
 
   return (
