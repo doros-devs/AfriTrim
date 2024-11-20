@@ -1,10 +1,11 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { motion } from "framer-motion";
 import Sidebar from "./Sidebar";
 import ManageShops from "./ManageShops";
 import ShopForm from "./ShopForm";
-import BarbershopsList from "./BarbershopsList"; 
-import BarbershopDetails from "./BarbershopsDetails"; // Import the BarbershopDetails component
+import BarbershopsList from "./BarbershopsList";
+import BarbershopDetails from "./BarbershopsDetails";
 
 const Dashboard = () => {
   return (
@@ -14,28 +15,88 @@ const Dashboard = () => {
 
       {/* Main Content Area */}
       <div className="ml-[220px] p-8 flex-1">
-        {/* Dashboard Box */}
-        <div className="bg-black/80 border border-yellow-400 rounded-lg shadow-lg p-6">
+        {/* Motion Wrapper for Fade-in Animation */}
+        <motion.div
+          className="bg-black/80 border border-yellow-400 rounded-lg shadow-lg p-6"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <h2 className="text-4xl font-extrabold text-center mb-6">
             Welcome to the Super Admin Dashboard
           </h2>
 
-          {/* Nested Routes */}
-          <Routes>
-            <Route
-              index
-              element={
-                <h3 className="text-2xl font-semibold text-center">
-                  Dashboard Overview
-                </h3>
-              }
-            />
-            <Route path="manage-shops" element={<ManageShops />} />
-            <Route path="shopform" element={<ShopForm />} />
-            <Route path="barbershopslist" element={<BarbershopsList />} />
-            <Route path="barbershops/:id" element={<BarbershopDetails />} />
-          </Routes>
-        </div>
+          {/* Nested Routes with Animation */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4 }}
+          >
+            <Routes>
+              <Route
+                index
+                element={
+                  <motion.h3
+                    className="text-2xl font-semibold text-center"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2, duration: 0.5 }}
+                  >
+                    Dashboard Overview
+                  </motion.h3>
+                }
+              />
+              <Route
+                path="manage-shops"
+                element={
+                  <motion.div
+                    initial={{ opacity: 0, y: -30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <ManageShops />
+                  </motion.div>
+                }
+              />
+              <Route
+                path="shopform"
+                element={
+                  <motion.div
+                    initial={{ opacity: 0, x: -50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <ShopForm />
+                  </motion.div>
+                }
+              />
+              <Route
+                path="barbershopslist"
+                element={
+                  <motion.div
+                    initial={{ scale: 0.9 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <BarbershopsList />
+                  </motion.div>
+                }
+              />
+              <Route
+                path="barbershops/:id"
+                element={
+                  <motion.div
+                    initial={{ opacity: 0, rotate: -5 }}
+                    animate={{ opacity: 1, rotate: 0 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <BarbershopDetails />
+                  </motion.div>
+                }
+              />
+            </Routes>
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );

@@ -1,30 +1,26 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { signup, googleSignIn } from "../firebase/auth";
+import { login, googleSignIn } from "../firebase/auth"; // import the login and googleSignIn functions from the auth.js file in the firebase folder
 
-const Signup = () => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
 
-  const handleSignup = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    await signup(email, password);
-    navigate("/login");
+    await login(email, password);
   };
 
-  const handleGoogleSignup = async () => {
+  const handleGoogleLogin = async () => {
     await googleSignIn();
-    navigate("/login");
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-black text-white">
       <div className="w-full max-w-md p-8 space-y-6 bg-white text-black rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center text-black">
-          Signup for AfriTrim
+          Login to AfriTrim
         </h2>
-        <form onSubmit={handleSignup} className="space-y-4">
+        <form onSubmit={handleLogin} className="space-y-4">
           <input
             type="email"
             value={email}
@@ -45,21 +41,32 @@ const Signup = () => {
             type="submit"
             className="w-full py-2 mt-4 text-white bg-gold rounded-lg hover:bg-black"
           >
-            Sign Up
+            Login
           </button>
         </form>
         <div className="mt-6 text-center">
-          <p>Or sign up with:</p>
+          <p>Or login with:</p>
           <button
-            onClick={handleGoogleSignup}
+            onClick={handleGoogleLogin}
             className="w-full py-2 mt-2 text-white bg-black border border-gold rounded-lg hover:bg-gold"
           >
             Google
           </button>
         </div>
+        <p className="mt-4 text-center">
+          Don't have an account?{" "}
+          <a href="/signup" className="text-gold hover:underline">
+            Sign up here
+          </a>
+        </p>
+        <p className="text-center">
+          <a href="/forgot-password" className="text-gold hover:underline">
+            Forgot Password?
+          </a>
+        </p>
       </div>
     </div>
   );
 };
 
-export default Signup;
+export default Login;
