@@ -1,68 +1,82 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState } from 'react';
+import { ShopContext } from './ShopContext'; 
 
-const ShopForm = ({ onSubmit, shopToEdit }) => {
-  const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
-  const [owner, setOwner] = useState("");
+const ManageShops = () => {
+const { shops, addShop } = useContext(ShopContext); 
+const [shopName, setShopName] = useState('');
+const [ownerName, setOwnerName] = useState('');
 
-  useEffect(() => {
-    if (shopToEdit) {
-      setName(shopToEdit.name);
-      setAddress(shopToEdit.address);
-      setOwner(shopToEdit.owner);
-    }
-  }, [shopToEdit]);
+const handleRegisterShop = (e) => {
+e.preventDefault();
+if (!shopName || !ownerName) {
+alert('Please provide both shop name and owner name');
+return;
+}
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit({ name, address, owner });
-    setName("");
-    setAddress("");
-    setOwner("");
-  };
-
-  return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-black text-gold p-10 rounded-lg shadow-2xl border border-gold w-full max-w-lg mx-auto"
-    >
-      <h2 className="text-4xl font-extrabold text-center mb-6">
-        {shopToEdit ? "Edit Shop" : "Add New Shop"}
-      </h2>
-      <div className="space-y-5">
-        <input
-          type="text"
-          placeholder="Shop Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full bg-gray-800 text-gold border border-gold rounded-lg px-5 py-3 placeholder-gold focus:outline-none focus:ring-4 focus:ring-gold focus:border-transparent transition duration-300"
-          required
-        />
-        <input
-          type="text"
-          placeholder="Shop Address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          className="w-full bg-gray-800 text-gold border border-gold rounded-lg px-5 py-3 placeholder-gold focus:outline-none focus:ring-4 focus:ring-gold focus:border-transparent transition duration-300"
-          required
-        />
-        <input
-          type="text"
-          placeholder="Shop Owner"
-          value={owner}
-          onChange={(e) => setOwner(e.target.value)}
-          className="w-full bg-gray-800 text-gold border border-gold rounded-lg px-5 py-3 placeholder-gold focus:outline-none focus:ring-4 focus:ring-gold focus:border-transparent transition duration-300"
-          required
-        />
-      </div>
-      <button
-        type="submit"
-        className="mt-8 w-full bg-gradient-to-r from-gold to-yellow-500 text-black font-semibold text-lg px-5 py-3 rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
-      >
-        {shopToEdit ? "Update Shop" : "Add Shop"}
-      </button>
-    </form>
-  );
+const newShop = {
+id: shops.length + 1, 
+name: shopName,
+owner: ownerName,
 };
 
-export default ShopForm;
+addShop(newShop);
+
+setShopName('');
+setOwnerName('');
+};
+
+return (
+<div className="min-h-screen bg-black text-yellow-400 p-6">
+<h2 className="text-3xl font-bold mb-4">Manage Shop Owners</h2>
+<form onSubmit={handleRegisterShop} className="space-y-4">
+<div>
+<label className="block text-lg">
+Shop Name:
+<input
+type="text"
+value={shopName}
+onChange={(e) => setShopName(e.target.value)}
+placeholder="Enter Shop Name"
+required
+className="mt-2 p-2 w-full bg-black border border-yellow-400 text-yellow-400 placeholder-yellow-400 rounded-md"
+/>
+</label>
+</div>
+<div>
+<label className="block text-lg">
+Owner Name:
+<input
+type="text"
+value={ownerName}
+onChange={(e) => setOwnerName(e.target.value)}
+placeholder="Enter Owner Name"
+required
+className="mt-2 p-2 w-full bg-black border border-yellow-400 text-yellow-400 placeholder-yellow-400 rounded-md"
+/>
+</label>
+</div>
+<button
+type="submit"
+className="px-4 py-2 bg-yellow-400 text-black font-semibold rounded-md"
+>
+Register Shop
+</button>
+</form>
+
+<h3 className="text-2xl mt-6">Registered Shops</h3>
+{shops.length === 0 ? (
+<p className="mt-2">No shops registered yet.</p>
+) : (
+<ul className="mt-2 space-y-2">
+{shops.map((shop) => (
+<li key={shop.id} className="text-xl">
+{shop.name} - Owner: {shop.owner}
+</li>
+))}
+</ul>
+)}
+</div>
+);
+};
+
+export default ManageShops;

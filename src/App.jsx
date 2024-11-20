@@ -10,6 +10,8 @@ import ShopCard from './components/ShopCard';
 import ShopForm from './components/ShopForm';
 import Sidebar from './components/Sidebar';
 import { ShopContext } from './components/ShopContext';
+import BarbershopsList from './components/BarbershopsList';
+import BarbershopsDetails from './components/BarbershopsDetails';
 // import Terms from './components/Terms';
 const App = () => {
   return (
@@ -25,6 +27,8 @@ const App = () => {
         <Route path="/shopform" element={<ShopForm />} />
         <Route path="/sidebar" element={<Sidebar />} /> 
         <Route path="/shopcontext" element={<ShopContext />} />
+        < Route path="/barbershopslist" element={<BarbershopsList />} />
+        <Route path="/barbershopdetails" element={<BarbershopDetails />} />
         {/* <Route path="/terms" element={<Terms />} /> */}
       </Routes>
     </div>
