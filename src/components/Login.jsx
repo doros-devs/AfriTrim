@@ -7,6 +7,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -42,7 +44,7 @@ const Login = () => {
 const verifyTokenAndNavigate = async (token) => {
   try {
     const response = await axios.post(
-      "http://localhost:5555/api/auth/verify",
+      `${backendUrl}/api/auth/verify`,
       {},
       {
         headers: {
