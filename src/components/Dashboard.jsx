@@ -5,7 +5,7 @@ import Navbar from "./Navbar";
 import ManageShops from "./ManageShops";
 import ShopForm from "./ShopForm";
 import BarbershopsList from "./BarbershopsList"; 
-import BarbershopDetails from "./BarbershopDetails"; // Import the BarbershopDetails component
+import BarbershopDetails from "./BarbershopsDetails"; // Import the BarbershopDetails component
 
 const Dashboard = () => {
   return (
