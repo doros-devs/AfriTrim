@@ -1,0 +1,61 @@
+{
+    "serviceCount": 543,
+    "registrations": [
+        { "period": "lastMonth", "count": 45 },
+        { "period": "lastQuarter", "count": 120 },
+        { "period": "lastYear", "count": 480 }
+  ],
+    "barbershops": [
+        { "id": 1, "name": "Barber Luxe", "revenue": 12000 },
+        { "id": 2, "name": "The Golden Razor", "revenue": 9800 },
+        { "id": 3, "name": "Trendy Cuts", "revenue": 1200 },
+        { "id": 4, "name": "Classic Shave", "revenue": 800 },
+        { "id": 5, "name": "Fresh Styles", "revenue": 5000 },
+        { "id": 6, "name": "Sharp Shaves", "revenue": 3500 }
+    ],
+    "salesTrends": [
+      { "date": "2024-11-01", "revenue": 1000 },
+      { "date": "2024-11-02", "revenue": 1500 },
+      { "date": "2024-11-03", "revenue": 1200 },
+      { "date": "2024-11-04", "revenue": 1300 },
+      { "date": "2024-11-05", "revenue": 1700 }
+    ],
+    "users": [
+    { "id": 1, "name": "John Doe", "active": true },
+    { "id": 2, "name": "Jane Smith", "active": true },
+    { "id": 3, "name": "Emily Johnson", "active": false },
+    { "id": 4, "name": "Michael Brown", "active": true },
+    { "id": 5, "name": "Sarah Davis", "active": false },
+    { "id": 6, "name": "Chris White", "active": true }
+  ],
+  "feedback": [
+    { "user": "John Doe", "message": "Great service, will come back again!" },
+    { "user": "Jane Smith", "message": "Very professional, highly recommended!" },
+    { "user": "Emily Johnson", "message": "Friendly atmosphere, but could improve speed." },
+    { "user": "Michael Brown", "message": "Fantastic experience, definitely worth it!" },
+    { "user": "Sarah Davis", "message": "The barbers are skilled, but I had to wait a bit long." },
+    { "user": "Chris White", "message": "Amazing haircut, friendly staff." }
+  ],
+  "users2": [
+    { "id": 1, "name": "John Doe" },
+    { "id": 2, "name": "Jane Smith" },
+    { "id": 3, "name": "Emily Johnson" },
+    { "id": 4, "name": "Michael Brown" },
+    { "id": 5, "name": "Sarah Davis" },
+    { "id": 6, "name": "Chris White" }
+  ],
+  "subscriptions": [
+    { "userId": 1, "status": "active" },
+    { "userId": 2, "status": "inactive" },
+    { "userId": 3, "status": "active" },
+    { "userId": 4, "status": "active" },
+    { "userId": 5, "status": "inactive" },
+    { "userId": 6, "status": "active" }
+  ],
+  "newSignups": [
+    { "id": 1, "name": "Alice Parker" },
+    { "id": 2, "name": "Jake Lee" }
+  ]
+
+}
+  
