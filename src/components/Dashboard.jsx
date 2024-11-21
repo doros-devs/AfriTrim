@@ -7,24 +7,24 @@ import BarbershopsList from "./BarbershopsList";
 
 const Dashboard = () => {
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white">
+    <div className="flex min-h-screen bg-gradient-to-br from-blackGray via-darkGray to-blackGray text-lightGray">
       {/* Sidebar */}
       <Sidebar />
 
       {/* Main Content Area */}
-      <div className="ml-[220px] p-8 flex-1">
+      <div className="flex-1 p-8">
         {/* Motion Wrapper for Fade-in Animation */}
         <motion.div
-          className="bg-black/80 border border-yellow-400 rounded-lg shadow-xl p-6"
+          className="bg-darkGray border border-gold rounded-lg shadow-2xl p-8"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          <h2 className="text-4xl font-extrabold text-center mb-6">
-            Welcome to the Super Admin Dashboard
+          <h2 className="text-4xl font-extrabold text-center mb-6 text-gold">
+            Super Admin Dashboard
           </h2>
 
-          {/* Nested Routes with Animation */}
+          {/* Nested Routes */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -35,12 +35,12 @@ const Dashboard = () => {
                 index
                 element={
                   <motion.h3
-                    className="text-2xl font-semibold text-center text-gray-300"
+                    className="text-2xl font-semibold text-center text-lightgold"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2, duration: 0.5 }}
                   >
-                    Dashboard Overview
+                    Welcome to the Dashboard Overview
                   </motion.h3>
                 }
               />

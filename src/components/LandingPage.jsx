@@ -1,7 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Navbar from "./Navbar";
-import { Link } from "react-scroll";
 
 const LandingPage = () => {
   const serviceImages = {
@@ -44,24 +43,17 @@ const LandingPage = () => {
             deserves.
           </motion.p>
           <motion.div
-            className="flex space-x-4 justify-center md:justify-start"
+            className="flex justify-center md:justify-start"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.9 }}
           >
-            <button className="bg-gold text-black font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-mediumGray hover:text-white transition-all duration-300 ease-in-out">
-              Booking
-            </button>
-            <Link
-              to="services"
-              smooth={true}
-              duration={500}
-              className="cursor-pointer"
+            <button
+              className="bg-gold text-black font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-mediumGray hover:text-white transition-all duration-300 ease-in-out"
+              onClick={() => window.location.href = "/signup"}
             >
-              <button className="border border-lightGray px-8 py-3 rounded-full text-gray-300 hover:bg-darkGray hover:text-white transition-all duration-300 ease-in-out">
-                Read More
-              </button>
-            </Link>
+              Get Started
+            </button>
           </motion.div>
         </div>
 

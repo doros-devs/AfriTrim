@@ -9,7 +9,9 @@ const BarbershopsList = () => {
   useEffect(() => {
     const fetchBarbershops = async () => {
       try {
-        const response = await fetch("https://afritrimbackend.onrender.com/api/admin/barbershops");
+        const response = await fetch(
+          "https://afritrimbackend.onrender.com/api/admin/barbershops"
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch barbershops");
         }
@@ -26,7 +28,7 @@ const BarbershopsList = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-yellow-400 text-center">Loading...</div>;
+    return <div className="text-gold text-center">Loading...</div>;
   }
 
   if (error) {
@@ -34,26 +36,33 @@ const BarbershopsList = () => {
   }
 
   return (
-    <ul className="space-y-4">
-      {barbershops.length === 0 ? (
-        <p className="text-yellow-400 text-center">No barbershops registered yet.</p>
-      ) : (
-        barbershops.map((shop) => (
-          <li key={shop.id}>
-            <Link
-              to={`/dashboard/barbershops/${shop.id}`} 
-              className="flex items-center space-x-4 p-2 bg-black text-yellow-400 border border-yellow-300 rounded-lg hover:bg-yellow-400 hover:text-black transition-colors"
-            >
-              <div>
-                <h2 className="text-lg font-bold">{shop.name}</h2>
-                <p className="text-sm">Location: {shop.location}</p>
-                <p className="text-sm">Contact: {shop.contact}</p>
-              </div>
-            </Link>
-          </li>
-        ))
-      )}
-    </ul>
+    <div className="bg-blackGray p-6 rounded-lg shadow-lg">
+      <h3 className="text-3xl font-bold text-gold mb-4 text-center">
+        Barbershops List
+      </h3>
+      <ul className="space-y-4">
+        {barbershops.length === 0 ? (
+          <p className="text-gold text-center">
+            No barbershops registered yet.
+          </p>
+        ) : (
+          barbershops.map((shop) => (
+            <li key={shop.id}>
+              <Link
+                to={`/dashboard/barbershops/${shop.id}`}
+                className="flex items-center justify-between p-4 bg-darkGray text-lightGray border border-lightgold rounded-lg hover:bg-gold hover:text-blackGray transition-all"
+              >
+                <div>
+                  <h2 className="text-lg font-bold">{shop.name}</h2>
+                  <p className="text-sm">Location: {shop.location}</p>
+                  <p className="text-sm">Contact: {shop.contact}</p>
+                </div>
+              </Link>
+            </li>
+          ))
+        )}
+      </ul>
+    </div>
   );
 };
 
