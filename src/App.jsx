@@ -4,7 +4,8 @@ import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Forgotpassword from "./components/Forgotpasword";
 import LandingPage from "./components/LandingPage";
-import AdminDashboard from "./components/AdminDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
+import MainPage from "./pages/MainPage"; 
 import BarberDashboard from "./components/BarberDashboard";
 import ClientDashboard from "./components/ClientDashboard";
 import Dashboard from "./components/Dashboard";
@@ -15,6 +16,7 @@ const App = () => {
   return (
     <Router>
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
