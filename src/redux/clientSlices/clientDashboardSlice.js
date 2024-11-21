@@ -1,19 +1,19 @@
-// clientDashboardSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 // Initial state for the dashboard
 const initialState = {
-  activeTab: "search", // Current active tab in the UI
-  search: "", // Search query for shops
-  selectedShop: null, // The selected shop
-  selectedService: null, // The selected service
-  barber: "", // The selected barber
-  appointmentDetails: null, // Appointment details after booking
-  paymentInitialized: false, // Whether the payment process is initialized
-  messages: [], // Messages for the chat
+  activeTab: "search",
+  search: "",
+  selectedShop: null,
+  selectedService: null,
+  barber: "",
+  appointmentDetails: null,
+  paymentInitialized: false,
+  messages: [],
+  appointments: [],
+  selectedAppointment: null, // New state to track the selected appointment
 };
 
-// Create slice
 const clientDashboardSlice = createSlice({
   name: "clientDashboard",
   initialState,
@@ -26,8 +26,8 @@ const clientDashboardSlice = createSlice({
     },
     setSelectedShop: (state, action) => {
       state.selectedShop = action.payload;
-      state.selectedService = null; // Reset service selection
-      state.barber = ""; // Reset barber selection
+      state.selectedService = null;
+      state.barber = "";
     },
     setSelectedService: (state, action) => {
       state.selectedService = action.payload.name;
@@ -35,7 +35,7 @@ const clientDashboardSlice = createSlice({
     },
     setAppointmentDetails: (state, action) => {
       state.appointmentDetails = action.payload;
-      state.paymentInitialized = true; // Initialize payment process after booking
+      state.paymentInitialized = true;
     },
     setPaymentInitialized: (state, action) => {
       state.paymentInitialized = action.payload;
@@ -52,11 +52,26 @@ const clientDashboardSlice = createSlice({
       state.appointmentDetails = null;
       state.paymentInitialized = false;
       state.messages = [];
+      state.appointments = [];
+      state.selectedAppointment = null; // Reset selected appointment
+    },
+    setAppointments: (state, action) => {
+      state.appointments = action.payload;
+    },
+    addAppointment: (state, action) => {
+      state.appointments.push(action.payload);
+    },
+    cancelAppointment: (state, action) => {
+      state.appointments = state.appointments.filter(
+        (appointment) => appointment.id !== action.payload
+      );
+    },
+    setSelectedAppointment: (state, action) => {
+      state.selectedAppointment = action.payload; // Set selected appointment
     },
   },
 });
 
-// Export actions
 export const {
   setActiveTab,
   setSearch,
@@ -66,7 +81,10 @@ export const {
   setPaymentInitialized,
   addMessage,
   resetState,
+  setAppointments,
+  addAppointment,
+  cancelAppointment,
+  setSelectedAppointment, // Export the new action
 } = clientDashboardSlice.actions;
 
-// Export reducer
 export default clientDashboardSlice.reducer;
