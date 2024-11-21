@@ -2,12 +2,15 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
-import ForgotPassword from "./components/Forgotpassword";
+import Forgotpassword from "./components/Forgotpasword";
 import LandingPage from "./components/LandingPage";
-import AdminDashboard from "./pages/AdminDashboard"; // from ft-shopadmin
-import MainPage from "./pages/MainPage"; // from ft-shopadmin
+import AdminDashboard from "./pages/AdminDashboard";
+import MainPage from "./pages/MainPage"; 
 import BarberDashboard from "./components/BarberDashboard";
 import ClientDashboard from "./components/ClientDashboard";
+import Dashboard from "./components/Dashboard";
+import BarbershopsList from "./components/BarbershopsList";
+import BarbershopsDetails from "./components/BarbershopsDetails";
 
 const App = () => {
   return (
@@ -17,17 +20,17 @@ const App = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        
-        {/* Dashboard Route - after login */}
-        <Route path="/main" element={<MainPage />} />
-        
-        {/* Admin Dashboard Route */}
-        <Route path="/dashboard" element={<AdminDashboard />} />
-        
-        {/* Barber and Client Dashboards */}
-        <Route path="/barber-dashboard" element={<BarberDashboard />} />
+        <Route path="/forgot-password" element={<Forgotpassword />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/barber-dashboard" element={<BarberDashboard />} />  
         <Route path="/client-dashboard" element={<ClientDashboard />} />
+
+
+        {/* Dashboard with nested routes */}
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route path="barbershopslist" element={<BarbershopsList />} />
+          <Route path="barbershopsdetails" element={<BarbershopsDetails />} />
+        </Route>
       </Routes>
     </Router>
   );
