@@ -50,13 +50,11 @@ const BarbershopsList = () => {
             <li key={shop.id}>
               <Link
                 to={`/dashboard/barbershops/${shop.id}`}
-                className="flex items-center justify-between p-4 bg-darkGray text-lightGray border border-lightgold rounded-lg hover:bg-gold hover:text-blackGray transition-all"
+                className="flex flex-col items-center justify-center p-6 bg-darkGray text-lightGray border border-lightgold rounded-lg hover:bg-gold hover:text-blackGray transition-all space-y-2"
               >
-                <div>
-                  <h2 className="text-lg font-bold">{shop.name}</h2>
-                  <p className="text-sm">Location: {shop.location}</p>
-                  <p className="text-sm">Contact: {shop.contact}</p>
-                </div>
+                <h2 className="text-lg font-bold">{shop.name}</h2>
+                <p className="text-sm">Location: {shop.location}</p>
+                <p className="text-sm">Contact: {shop.contact}</p>
               </Link>
             </li>
           ))
