@@ -9,7 +9,7 @@ const BarbershopsList = () => {
   useEffect(() => {
     const fetchBarbershops = async () => {
       try {
-        const response = await fetch("https://afritrimbackend.onrender.com/admin/barbershop");
+        const response = await fetch("https://afritrimbackend.onrender.com/api/admin/barbershops");
         if (!response.ok) {
           throw new Error("Failed to fetch barbershops");
         }
@@ -41,7 +41,7 @@ const BarbershopsList = () => {
         barbershops.map((shop) => (
           <li key={shop.id}>
             <Link
-              to={`/dashboard/barbershops/${shop.id}`} // Ensure the path is /dashboard/barbershops/:id
+              to={`/dashboard/barbershops/${shop.id}`} 
               className="flex items-center space-x-4 p-2 bg-black text-yellow-400 border border-yellow-300 rounded-lg hover:bg-yellow-400 hover:text-black transition-colors"
             >
               <div>

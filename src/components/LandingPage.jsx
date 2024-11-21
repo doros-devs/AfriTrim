@@ -7,7 +7,7 @@ const LandingPage = () => {
   const serviceImages = {
     Haircut: "/images/New hair cut gallery.jpeg",
     Shaving: "/images/94034b61-87da-4905-93e1-a9bda202a586.jpeg",
-    "Beard Trim": "/images/Andis stand barbering live demo.jpeg",
+    "Beard Trim": "/images/Transform Your Look with Advanced Hair Replacement Techniques.jpeg",
   };
 
   return (

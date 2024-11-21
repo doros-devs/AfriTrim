@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaUserTie, FaClipboardList, FaPlusCircle, FaSignOutAlt } from "react-icons/fa";
+import { FaClipboardList, FaSignOutAlt } from "react-icons/fa";
 
 const Sidebar = () => {
   const handleLogout = () => {
@@ -25,28 +25,6 @@ const Sidebar = () => {
           </Link>
         </li>
 
-        {/* Manage Shops */}
-        <li>
-          <Link
-            to="/dashboard/manage-shops"
-            className="flex items-center space-x-4 text-lg hover:text-yellow-300 transition-colors"
-          >
-            <FaUserTie className="text-2xl" />
-            <span>Manage Shops</span>
-          </Link>
-        </li>
-
-        {/* Shop Form */}
-        <li>
-          <Link
-            to="/dashboard/shopform"
-            className="flex items-center space-x-4 text-lg hover:text-yellow-300 transition-colors"
-          >
-            <FaPlusCircle className="text-2xl" />
-            <span>Add Shop</span>
-          </Link>
-        </li>
-        
         {/* Barbershop List */}
         <li>
           <Link
