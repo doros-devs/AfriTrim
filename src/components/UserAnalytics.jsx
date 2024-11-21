@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const UserAnalytics = () => {
   const dispatch = useDispatch();
@@ -10,13 +10,16 @@ const UserAnalytics = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch users data from db.json
+        // Fetch active users count from your local users API or database
         const usersResponse = await axios.get("http://localhost:5000/users");
         const activeUserCount = usersResponse.data.filter(user => user.active).length;
         setActiveUsers(activeUserCount);
 
-        // Fetch feedback data from db.json
-        const feedbackResponse = await axios.get("http://localhost:5000/feedback");
+        // Fetch customer feedback from the provided API endpoint
+        const feedbackResponse = await axios.get(
+          "https://afritrimbackend.onrender.com/api/review/",
+          { headers: { accept: "application/json" } }
+        );
         setFeedback(feedbackResponse.data);
 
         // Optionally, dispatch actions to Redux if needed
@@ -46,8 +49,13 @@ const UserAnalytics = () => {
               key={index}
               className="mb-4 p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-md"
             >
-              <p className="text-lg font-semibold text-gray-700">{entry.user}</p>
-              <p className="text-sm text-gray-600">{entry.message}</p>
+              <p className="text-lg font-semibold text-gray-700">
+                Barber ID: {entry.barber_id} (Rating: {entry.rating})
+              </p>
+              <p className="text-sm text-gray-600">{entry.comment}</p>
+              <p className="text-xs text-gray-500">
+                Created at: {new Date(entry.created_at).toLocaleString()}
+              </p>
             </li>
           ))}
         </ul>

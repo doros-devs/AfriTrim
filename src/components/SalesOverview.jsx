@@ -11,17 +11,18 @@ const SalesOverview = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetching top-performing barbershops
-        const barbershopResponse = await axios.get("http://localhost:5000/barbershops");
+        // Fetching barbershop data from the correct endpoint
+        const barbershopResponse = await axios.get("https://afritrimbackend.onrender.com/api/barbershop/");
         setBarbershopData(barbershopResponse.data);
 
-        // Fetching sales trends (revenue data)
-        const salesTrendResponse = await axios.get("http://localhost:5000/salesTrends");
-        setRevenueData(salesTrendResponse.data);
+        // Fetching revenue data from the correct endpoint
+        const revenueResponse = await axios.get("https://afritrimbackend.onrender.com/api/sale/");
+        setRevenueData(revenueResponse.data);
 
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data: ", error);
+        setLoading(false);
       }
     };
 
@@ -29,38 +30,23 @@ const SalesOverview = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-center text-xl">Loading...</div>;
+    return <div>Loading...</div>;
   }
 
   return (
-    <div className="space-y-8">
-      {/* Sales by Barbershop */}
-      <div className="bg-white p-6 shadow-xl rounded-lg border-2 border-black">
-        <h2 className="text-3xl font-bold text-black mb-4 text-center">
-          Top-Performing Barbershops
-        </h2>
-        <ul className="space-y-3">
-          {barbershopData.map((shop) => (
-            <li
-              key={shop.id}
-              className="flex justify-between items-center bg-gray-50 p-4 rounded-lg shadow-lg hover:bg-gold-200 transition-all"
-            >
-              <span className="font-medium text-lg text-black">{shop.name}</span>
-              <span className="font-medium text-lg text-gold-500">${shop.revenue}</span>
-            </li>
-          ))}
-        </ul>
+    <div className="sales-overview">
+      <h1>Sales Overview</h1>
+      <div className="stats">
+        <StatsCard title="Total Barbershops" value={barbershopData.length} />
+        <StatsCard
+          title="Total Revenue"
+          value={revenueData.reduce((acc, sale) => acc + sale.amount, 0).toFixed(2)}
+        />
       </div>
 
-      {/* Sales Trends */}
-      <div className="bg-white p-6 shadow-xl rounded-lg border-2 border-black">
-        <h2 className="text-3xl font-bold text-black mb-4 text-center">
-          Sales Trends Over Time
-        </h2>
-        <LineChartComponent
-          data={revenueData}
-          onPointClick={(data) => console.log("Point clicked:", data)}
-        />
+      <div className="charts">
+        {/* Example of a line chart component */}
+        <LineChartComponent data={revenueData} />
       </div>
     </div>
   );

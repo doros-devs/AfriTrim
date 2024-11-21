@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import { setMetrics } from "../redux/keyMetricsSlice";
 import StatsCard from "./StatsCard";
 
 const KeyMetrics = () => {
   const dispatch = useDispatch();
-  
+
   const [totalUsers, setTotalUsers] = useState(0);
   const [revenue, setRevenue] = useState(0);
   const [activeSubscriptions, setActiveSubscriptions] = useState(0);
@@ -15,23 +15,24 @@ const KeyMetrics = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch users from db.json to calculate Total Users
-        const usersResponse = await axios.get("http://localhost:5000/users");
-        setTotalUsers(usersResponse.data.length);
+        // Fetch total users count from the barbershops API (since we assume each barbershop corresponds to a user)
+        const barbershopsResponse = await axios.get("https://afritrimbackend.onrender.com/api/admin/barbershops");
+        setTotalUsers(barbershopsResponse.data.length); // Count barbershops for total users
 
-        // Fetch barbershops from db.json to calculate average Revenue
-        const barbershopsResponse = await axios.get("http://localhost:5000/barbershops");
-        const totalRevenue = barbershopsResponse.data.reduce((acc, shop) => acc + shop.revenue, 0);
-        setRevenue((totalRevenue / barbershopsResponse.data.length).toFixed(2)); // Calculate average revenue
+        // Fetch revenue data from the sales API
+        const revenueResponse = await axios.get("https://afritrimbackend.onrender.com/api/sale/");
+        const totalRevenue = revenueResponse.data.reduce((acc, sale) => acc + sale.amount, 0); // Sum up revenue from sales
+        setRevenue(totalRevenue.toFixed(2)); // Set total revenue
 
-        // Fetch subscriptions from db.json to calculate Active Subscriptions
-        const subscriptionsResponse = await axios.get("http://localhost:5000/subscriptions");
-        const activeCount = subscriptionsResponse.data.filter(sub => sub.status === "active").length;
-        setActiveSubscriptions(activeCount);
+        // Fetch active subscriptions by checking barbershop data (assuming active subscriptions are the barbershops with a certain status or condition)
+        const subscriptionsResponse = await axios.get("https://afritrimbackend.onrender.com/api/barbershop/1/barbers");
+        const activeCount = subscriptionsResponse.data.filter(barber => barber.available === true).length;
+        setActiveSubscriptions(activeCount); // Count active barbers (available)
 
-        // Fetch new signups from db.json to get the count of New Signups
-        const signupsResponse = await axios.get("http://localhost:5000/newSignups");
-        setNewSignups(signupsResponse.data.length);
+        // Fetch new signups (which could be determined by new barbers added recently)
+        const newSignupsResponse = await axios.get("https://afritrimbackend.onrender.com/api/barbershop/1/barbers");
+        const newSignupsCount = newSignupsResponse.data.length; // Count of new signups (new barbers)
+        setNewSignups(newSignupsCount); // Set new signups count
 
         // Dispatch metrics data to Redux (Optional)
         const metrics = [

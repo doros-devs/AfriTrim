@@ -11,13 +11,13 @@ const PerformanceReports = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetching registration data
+        // Fetching new registrations data
         const registrationResponse = await axios.get("http://localhost:5000/registrations");
         const registrationsData = registrationResponse.data;
         setRegistrations({
-          lastMonth: registrationsData.find(r => r.period === "lastMonth").count,
-          lastQuarter: registrationsData.find(r => r.period === "lastQuarter").count,
-          lastYear: registrationsData.find(r => r.period === "lastYear").count,
+          lastMonth: registrationsData.lastMonth,
+          lastQuarter: registrationsData.lastQuarter,
+          lastYear: registrationsData.lastYear,
         });
 
         // Fetching top and low performing barbershops
@@ -28,11 +28,12 @@ const PerformanceReports = () => {
 
         // Fetching total services completed
         const serviceResponse = await axios.get("http://localhost:5000/serviceCount");
-        setServiceCount(serviceResponse.data);
+        setServiceCount(serviceResponse.data.totalServices);  // assuming the API returns { totalServices: number }
 
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setLoading(false);
       }
     };
 
