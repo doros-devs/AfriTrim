@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { login, googleSignIn } from "../firebase/auth"; // import the login and googleSignIn functions from the auth.js file in the firebase folder
-
+import { login, googleSignIn } from "../firebase/auth"; 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
