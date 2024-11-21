@@ -1,0 +1,70 @@
+/* Sidebar styling */
+.sidebar {
+    transition: width 0.3s ease;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar li {
+    padding: 10px 0;
+  }
+  
+  .text-gold {
+    color: #FFD700; /* You can change this to your preferred gold shade */
+  }
+  
+  .sidebar-toggle-btn {
+    font-size: 30px;
+    background-color: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+  
+  /* Responsive Design: */
+  @media (max-width: 768px) {
+    .dashboard-layout {
+      flex-direction: column;
+    }
+  
+    .sidebar {
+      position: fixed;
+      z-index: 10;
+      height: 100%;
+      overflow-y: auto;
+      transition: width 0.3s ease;
+      width: 0; /* Sidebar hidden by default */
+      background-color: #111;
+    }
+  
+    .sidebar-visible {
+      width: 240px; /* Sidebar becomes visible when toggled */
+    }
+  
+    .main-content {
+      margin-left: 0;
+    }
+  
+    /* When the sidebar is toggled, ensure the main content adjusts */
+    .sidebar-visible + .main-content {
+      margin-left: 240px;
+    }
+  
+    .sidebar-toggle-btn {
+      display: block; /* Show hamburger menu button on small screens */
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .sidebar {
+      width: 240px; /* Sidebar is fully visible on larger screens */
+    }
+  
+    .sidebar-toggle-btn {
+      display: none; /* Hide hamburger menu button on larger screens */
+    }
+  }
+  

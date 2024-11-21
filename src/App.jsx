@@ -4,7 +4,8 @@ import Signup from "./components/Signup";
 import Login from "./components/Login";
 import ForgotPassword from "./components/Forgotpassword";
 import LandingPage from "./components/LandingPage";
-import AdminDashboard from "./components/AdminDashboard";
+import AdminDashboard from "./pages/AdminDashboard"; // from ft-shopadmin
+import MainPage from "./pages/MainPage"; // from ft-shopadmin
 import BarberDashboard from "./components/BarberDashboard";
 import ClientDashboard from "./components/ClientDashboard";
 
@@ -12,11 +13,19 @@ const App = () => {
   return (
     <Router>
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        
+        {/* Dashboard Route - after login */}
+        <Route path="/main" element={<MainPage />} />
+        
+        {/* Admin Dashboard Route */}
+        <Route path="/dashboard" element={<AdminDashboard />} />
+        
+        {/* Barber and Client Dashboards */}
         <Route path="/barber-dashboard" element={<BarberDashboard />} />
         <Route path="/client-dashboard" element={<ClientDashboard />} />
       </Routes>
