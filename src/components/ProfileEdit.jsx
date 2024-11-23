@@ -1,94 +1,130 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const ProfileEdit = () => {
   const [profileData, setProfileData] = useState({
     name: "",
-    email: "",
-    phone: "",
-    avatar: null,
-    services: {}, // Barber-service mappings
+    photo_url: "",
     location: "",
-    openingHours: "",
   });
 
-  const barbers = [
+  const [barbers, setBarbers] = useState([
+    // Example list of barbers; you may fetch this list from an API or Redux
     { id: 1, name: "Barber 1" },
     { id: 2, name: "Barber 2" },
-  ];
+  ]);
 
-  const handleInputChange = (e) => setProfileData({ ...profileData, [e.target.name]: e.target.value });
-  const handleAvatarChange = (e) => setProfileData({ ...profileData, avatar: e.target.files[0] });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setProfileData({ ...profileData, [name]: value });
+  };
 
   const handleServiceChange = (e, barberId) => {
     const { name, checked } = e.target;
     const updatedServices = { ...profileData.services };
-    if (!updatedServices[barberId]) updatedServices[barberId] = [];
-    updatedServices[barberId] = checked
-      ? [...updatedServices[barberId], name]
-      : updatedServices[barberId].filter((service) => service !== name);
+
+    // Ensure the barber has an entry for services
+    if (!updatedServices[barberId]) {
+      updatedServices[barberId] = [];
+    }
+
+    // Add or remove the service based on checkbox status
+    if (checked) {
+      updatedServices[barberId].push(name);
+    } else {
+      updatedServices[barberId] = updatedServices[barberId].filter(
+        (service) => service !== name
+      );
+    }
+
     setProfileData({ ...profileData, services: updatedServices });
   };
 
-  const handleSubmit = (e) => {
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    setProfileData({ ...profileData, avatar: file });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Profile updated:", profileData);
-    // Send updated data to the API/backend
+    try {
+
+      const response = await fetch(`http://localhost:5555/api/barbershop/2`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(profileData),
+      });
+
+      const data = await response.json()
+
+      if(response.ok){
+        alert("Profile changed successfully.")
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
+    // Here you can send the updated profile data to an API or backend
   };
 
   return (
     <div className="w-full max-w-md mx-auto bg-black p-6 rounded-md text-white">
       <h2 className="text-2xl font-bold mb-4 text-gold">Edit Profile</h2>
       <form onSubmit={handleSubmit}>
-        {["name", "email", "phone", "location", "openingHours"].map((field) => (
-          <div className="mb-4" key={field}>
-            <label htmlFor={field} className="block text-lg mb-2 text-white">
-              {field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, ' $1')}
-            </label>
-            <input
-              type={field === "email" ? "email" : "text"}
-              id={field}
-              name={field}
-              value={profileData[field]}
-              onChange={handleInputChange}
-              className="w-full p-3 rounded-md bg-gray-900 text-white border-2 border-gray-700 focus:border-gold focus:ring-2 focus:ring-gold"
-            />
-          </div>
-        ))}
-        
+        {/* Name */}
         <div className="mb-4">
-          <label htmlFor="avatar" className="block text-lg mb-2 text-white">Avatar</label>
+          <label htmlFor="name" className="block text-lg mb-2 text-white">
+            Name
+          </label>
           <input
-            type="file"
-            id="avatar"
-            name="avatar"
-            onChange={handleAvatarChange}
+            type="text"
+            id="name"
+            name="name"
+            value={profileData.name}
+            onChange={handleInputChange}
             className="w-full p-3 rounded-md bg-gray-900 text-white border-2 border-gray-700 focus:border-gold focus:ring-2 focus:ring-gold"
+            placeholder="Your new name"
+            required
           />
         </div>
 
+        {/* Location */}
         <div className="mb-4">
-          <label htmlFor="services" className="block text-lg mb-2 text-white">Services Offered</label>
-          {barbers.map((barber) => (
-            <div key={barber.id} className="mb-4">
-              <h3 className="text-lg text-white">{barber.name}</h3>
-              {["Haircut", "Shave", "Trim"].map((service) => (
-                <div key={service} className="flex items-center space-x-3">
-                  <input
-                    type="checkbox"
-                    id={`${barber.id}-${service}`}
-                    name={service}
-                    checked={profileData.services[barber.id]?.includes(service)}
-                    onChange={(e) => handleServiceChange(e, barber.id)}
-                    className="p-2"
-                  />
-                  <label htmlFor={`${barber.id}-${service}`} className="text-white">{service}</label>
-                </div>
-              ))}
-            </div>
-          ))}
+          <label htmlFor="location" className="block text-lg mb-2 text-white">
+            Location
+          </label>
+          <input
+            type="text"
+            id="location"
+            name="location"
+            value={profileData.location}
+            onChange={handleInputChange}
+            className="w-full p-3 rounded-md bg-gray-900 text-white border-2 border-gray-700 focus:border-gold focus:ring-2 focus:ring-gold"
+            placeholder="Your business location"
+          />
         </div>
 
-        <button type="submit" className="w-full p-3 rounded-md bg-gold text-black hover:bg-yellow-500 transition duration-300">
+        {/* Photo URL */}
+        <div className="mb-4">
+          <label htmlFor="Photo URL" className="block text-lg mb-2 text-white">
+            Photo URL
+          </label>
+          <input
+            type="text"
+            id="photo_url"
+            name="photo_url"
+            value={profileData.photo_url}
+            onChange={handleInputChange}
+            className="w-full p-3 rounded-md bg-gray-900 text-white border-2 border-gray-700 focus:border-gold focus:ring-2 focus:ring-gold"
+            placeholder="Your photo url"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full p-3 rounded-md bg-gold text-black hover:bg-yellow-500 transition duration-300"
+        >
           Save Changes
         </button>
       </form>

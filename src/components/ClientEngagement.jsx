@@ -68,12 +68,12 @@ const ClientEngagement = () => {
       {/* Main content */}
       <main className="flex-1 p-8 bg-gray-900">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gold">
+          <h2 className="text-2xl font-bold text-yellow-500">
             Client Engagement
           </h2>
           <div className="relative">
             {/* Notifications */}
-            <span className="absolute top-0 right-0 bg-gold text-black rounded-full text-xs w-6 h-6 flex items-center justify-center">
+            <span className="absolute top-0 right-0 bg-yellow-500 text-black rounded-full text-xs w-6 h-6 flex items-center justify-center">
               {notifications.length}
             </span>
             <ul className="bg-gray-800 rounded-md mt-2 max-h-40 overflow-y-auto">
@@ -112,7 +112,7 @@ const ClientEngagement = () => {
                   onClick={() => dispatch(setSelectedClientId(client.id))}
                   className={`p-3 cursor-pointer ${
                     client.id === selectedClientId
-                      ? "bg-gold text-black"
+                      ? "bg-yellow-500 text-black"
                       : "bg-gray-700"
                   }`}
                 >
@@ -136,7 +136,7 @@ const ClientEngagement = () => {
                 onClick={() => dispatch(setActiveTab("promotions"))}
                 className={`px-4 py-2 rounded-md ${
                   activeTab === "promotions"
-                    ? "bg-gold text-black"
+                    ? "bg-yellow-500 text-black"
                     : "bg-gray-700"
                 }`}
               >
@@ -146,7 +146,7 @@ const ClientEngagement = () => {
                 onClick={() => dispatch(setActiveTab("messages"))}
                 className={`px-4 py-2 rounded-md ${
                   activeTab === "messages"
-                    ? "bg-gold text-black"
+                    ? "bg-yellow-500 text-black"
                     : "bg-gray-700"
                 }`}
               >
@@ -156,7 +156,7 @@ const ClientEngagement = () => {
                 onClick={() => dispatch(setActiveTab("feedback"))}
                 className={`px-4 py-2 rounded-md ${
                   activeTab === "feedback"
-                    ? "bg-gold text-black"
+                    ? "bg-yellow-500 text-black"
                     : "bg-gray-700"
                 }`}
               >
@@ -167,7 +167,7 @@ const ClientEngagement = () => {
             {/* Tab Content */}
             {activeTab === "promotions" && (
               <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-semibold text-gold mb-4">
+                <h2 className="text-2xl font-semibold text-yellow-500 mb-4">
                   Send Promotion to {selectedClient.name}
                 </h2>
                 <textarea
@@ -178,7 +178,7 @@ const ClientEngagement = () => {
                 />
                 <button
                   onClick={handleSendPromotion}
-                  className="w-full mt-4 p-4 bg-gold text-black font-semibold rounded-md"
+                  className="w-full mt-4 p-4 bg-yellow-500 text-black font-semibold rounded-md"
                 >
                   Send Promotion
                 </button>
@@ -187,7 +187,7 @@ const ClientEngagement = () => {
 
             {activeTab === "messages" && (
               <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-semibold text-gold mb-4">
+                <h2 className="text-2xl font-semibold text-yellow-500 mb-4">
                   Messages with {selectedClient.name}
                 </h2>
                 <div className="space-y-4 bg-gray-900 p-5 rounded-md shadow-md max-h-60 overflow-y-auto">
@@ -197,7 +197,7 @@ const ClientEngagement = () => {
                         key={index}
                         className={`p-4 rounded-md ${
                           message.fromOwner
-                            ? "bg-gold text-black"
+                            ? "bg-yellow-500 text-black"
                             : "bg-gray-800"
                         }`}
                       >
@@ -218,7 +218,7 @@ const ClientEngagement = () => {
                   />
                   <button
                     onClick={handleSendMessage}
-                    className="p-4 bg-gold text-black rounded-md"
+                    className="p-4 bg-yellow-500 text-black rounded-md"
                   >
                     Send
                   </button>
@@ -228,7 +228,7 @@ const ClientEngagement = () => {
 
             {activeTab === "feedback" && (
               <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-semibold text-gold mb-4">
+                <h2 className="text-2xl font-semibold text-yellow-500 mb-4">
                   Client Feedback
                 </h2>
                 <p>{selectedClient.feedback || "No feedback yet."}</p>

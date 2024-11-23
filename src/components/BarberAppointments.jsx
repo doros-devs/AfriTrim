@@ -1,5 +1,5 @@
 // src/BarberAppointments.js
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setBarbers, setLoading } from "../redux/barberSlice"; // Import actions
 import { Bar, Pie } from "react-chartjs-2";
@@ -26,9 +26,40 @@ ChartJS.register(
 
 const BarberAppointments = () => {
   const dispatch = useDispatch();
-  const { barbers, loading, barChartData, pieChartData } = useSelector(
+  const { barbers, loading } = useSelector(
     (state) => state.barbers
   );
+
+  const [isFetching, setIsFetching] = useState(true)
+  const [barbersFromDB, setBarbersFromDB] = useState([])
+  const [barChartData, setBarChartData] = useState([])
+  const [pieChartData, setPieChartData] = useState([])
+
+  const fetchBarbers = async () => {
+    try {
+      const response = await fetch(`http://localhost:5555/api/barbershop/1/appointments`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json()
+
+      if(response.ok){
+        setIsFetching(false)
+        setBarbersFromDB(data.barbers)
+        setBarChartData(data.barChartData)
+        setPieChartData(data.pieChartData)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchBarbers();
+  }, [null]);
 
   useEffect(() => {
     dispatch(setLoading(true));
@@ -46,7 +77,7 @@ const BarberAppointments = () => {
       }));
 
       // Dispatch the fetched data to the store
-      dispatch(setBarbers(updatedBarbers));
+      // dispatch(setBarbers(updatedBarbers));
       dispatch(setLoading(false));
     };
 
@@ -81,10 +112,13 @@ const BarberAppointments = () => {
               height: "300px",
             }}
           >
-            <Bar
-              data={barChartData}
-              options={{ responsive: true, maintainAspectRatio: false }}
-            />
+            {!isFetching && (
+              <Bar
+                data={barChartData}
+                options={{ responsive: true, maintainAspectRatio: false }}
+              /> 
+            )}
+            
           </div>
         </div>
 
@@ -94,17 +128,19 @@ const BarberAppointments = () => {
             Overall Appointment Status
           </h2>
           <div style={{ height: "300px" }}>
-            <Pie
-              data={pieChartData}
-              options={{ responsive: true, maintainAspectRatio: false }}
-            />
+            {!isFetching && (
+              <Pie
+                data={pieChartData}
+                options={{ responsive: true, maintainAspectRatio: false }}
+              />
+            )}
           </div>
         </div>
       </div>
 
       {/* Barber Stats Section with Responsive Grid and Pagination */}
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {barbers.map((barber) => (
+        {barbersFromDB.map((barber) => (
           <div
             key={barber.id}
             className="bg-gray-800 p-4 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 transform hover:scale-105"
@@ -118,7 +154,7 @@ const BarberAppointments = () => {
               </p>
               <p className="text-lg font-medium">
                 <strong>Total Appointments:</strong>{" "}
-                {barber.appointments.length}
+                {barber.totalAppointments}
               </p>
               <p className="text-lg font-medium">
                 <strong>Completed:</strong> {barber.completed}
