@@ -1,20 +1,43 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setSearch } from "../redux/clientSlices/searchSlice"; // adjust the import path as needed
+import { setSearch } from "../redux/clientSlices/searchSlice"; 
+import axios from "axios"; 
 
 const SearchShops = ({ handleSelectShop }) => {
   const dispatch = useDispatch();
   const search = useSelector((state) => state.search.search);
+  const [shops, setShops] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const mockShops = [
-    { id: 1, name: "Golden Blades" },
-    { id: 2, name: "Luxury Cuts" },
-    { id: 3, name: "Prestige Barbershop" },
-  ];
+  // Get the backend URL from the environment variable
+  const backendUrl =
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:5555"; 
+
+  // Fetch shops from the backend API
+  useEffect(() => {
+    const fetchShops = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(`${backendUrl}/api/client/barbershops`);
+        setShops(response.data); // Assuming your API response is an array of shops
+      } catch (err) {
+        setError("Failed to fetch shops. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchShops();
+  }, [backendUrl]); 
 
   const handleSearchChange = (e) => {
     dispatch(setSearch(e.target.value));
   };
+
+  const filteredShops = shops.filter((shop) =>
+    shop.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="p-6 bg-blackGray rounded-lg shadow-lg max-w-md mx-auto">
@@ -25,11 +48,10 @@ const SearchShops = ({ handleSelectShop }) => {
         onChange={handleSearchChange}
         className="w-full p-3 rounded-lg mb-6 border-2 border-lightGray focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-200 text-black"
       />
-      {mockShops
-        .filter((shop) =>
-          shop.name.toLowerCase().includes(search.toLowerCase())
-        )
-        .map((shop) => (
+      {loading && <p>Loading shops...</p>}
+      {error && <p className="text-red-500">{error}</p>}
+      {filteredShops.length > 0 ? (
+        filteredShops.map((shop) => (
           <div
             key={shop.id}
             onClick={() => handleSelectShop(shop)}
@@ -37,7 +59,10 @@ const SearchShops = ({ handleSelectShop }) => {
           >
             <h3 className="text-xl text-black font-semibold">{shop.name}</h3>
           </div>
-        ))}
+        ))
+      ) : (
+        <p>No shops found</p>
+      )}
     </div>
   );
 };
